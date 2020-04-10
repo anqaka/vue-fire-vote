@@ -1,17 +1,33 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="container">
+    <div class="row center-xs">
+      <topic-list class="col-xs-12" />
+      <user-state class="col-xs-12" />
+      <add-topic v-if="isLoggedIn" class="col-xs-12" />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { mapGetters } from 'vuex'
+import AddTopic from './components/AddTopic.vue'
+import TopicList from './components/TopicList.vue'
+import UserState from './components/UserState.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    AddTopic,
+    TopicList,
+    UserState
+  },
+  mounted () {
+    this.$store.dispatch('onAuthStateChanged')
+  },
+  computed: {
+    ...mapGetters({
+      isLoggedIn: 'isLoggedIn'
+    })
   }
 }
 </script>

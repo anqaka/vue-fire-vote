@@ -1,0 +1,48 @@
+.topics-list {
+  list-style: none;
+  padding: 0;
+
+  &__item {
+    display: flex;
+    flex-flow: column nowrap;
+    margin-bottom: $spacer--xl;
+
+    @include mq($screen-sm-min) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  &__item-content {
+    flex-grow: 1;
+    text-align: left;
+    padding-top: $spacer--s;
+
+    @include mq($screen-sm-min) {
+      max-width: 70%;
+    }
+  }
+
+  &__item-title {
+    margin-bottom: $spacer--s;
+  }
+
+  &__item-vote {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+  }
+
+  &__item-vote-number {
+    padding: $spacer--m;
+  }
+
+  &__item-upvote {
+    margin: $spacer--m;
+    min-width: 100px;
+
+    &--voted {
+      background-color: $orange;
+    }
+  }
+}
