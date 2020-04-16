@@ -1,5 +1,15 @@
 # vue-fire-vote
 
+Web app to vote items
+
+## Basic features:
+Non logged user
+* see list of items
+Logged user
+* add item to list
+* vote item (upvote / downvote), unless he's its author
+* one item can be upvot only once
+
 ## Project setup
 ```
 yarn install
