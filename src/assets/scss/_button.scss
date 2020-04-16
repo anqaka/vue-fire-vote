@@ -1,0 +1,27 @@
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 150px;
+  min-height: 56px;
+  padding: 0 $spacer--m;
+  background-color: $gray-dark;
+  border: 1px solid $gray-dark;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-base;
+  line-height: $line-height;
+  color: $white;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:disabled {
+    background-color: $gray-light;
+    cursor: not-allowed;
+  }
+}
+
+button {
+  @extend .button;
+}

@@ -1,0 +1,13 @@
+.form-section {
+  margin: $spacer--xl;
+  box-shadow: $box-shadow;
+  padding: $spacer--l;
+
+  &__action {
+    margin: $spacer--l 0;
+  }
+  &__message {
+    color: red;
+    font-size: $font-size-small;
+  }
+}

@@ -1,0 +1,10 @@
+.label {
+  display: block;
+  font-size: $font-size-small;
+  margin-bottom: $spacer--xs;
+  text-align: left;
+}
+
+label {
+  @extend .label;
+}
