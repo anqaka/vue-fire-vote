@@ -22,7 +22,7 @@
             'topics-list__item-upvote--voted': isVoted
           }
         ]"
-        :disabled="!isLoggedIn"
+        :disabled="voteEnable"
         @click="isVoted ? downvote(id, votes) : upvote(id, votes)"
       >
         {{ actionText }}
@@ -68,15 +68,14 @@ export default {
     },
     actionText () {
       return this.isVoted ? 'Downvote' : 'Upvote'
+    },
+    voteEnable () {
+      return !this.isLoggedIn || (this.author === this.user.id)
     }
   },
   methods: {
     upvote (id, votes) {
-      if (this.author !== this.user.id) {
-        this.$store.dispatch('upvote', { id, votes })
-      } else {
-        alert('you cannot upvote your own proposition, it\'s not ethical')
-      }
+      this.$store.dispatch('upvote', { id, votes })
     },
     downvote (id, votes) {
       const userVote = this.userVotes.find(item => item[id] === true)

@@ -35,6 +35,7 @@ export default {
       await auth.onAuthStateChanged((user) => {
         if (!user) {
           commit('RESET_USER_DATA')
+          commit('RESET_VOTES_DATA')
           return
         }
         commit('SET_AUTH_USER', { user })

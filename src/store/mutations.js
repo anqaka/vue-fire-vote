@@ -6,6 +6,10 @@ export default {
     state.user = null
   },
 
+  RESET_VOTES_DATA: (state) => {
+    state.userVotes = []
+  },
+
   SET_AUTH_USER: (state, { user }) => {
     state.user = {
       id: user.uid,
