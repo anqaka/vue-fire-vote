@@ -37,12 +37,20 @@
           Log In
         </button>
         <button
-          class="button fb-button"
+          class="button button--facebook"
           type="button"
           @click="signInFb"
         >
-          <img class="fb-button__icon" src="../assets/images/fb-icon.svg" />
+          <img class="button__icon" src="../assets/images/fb-icon.svg" />
           Log In with Facebook
+        </button>
+        <button
+          class="button button--twitter"
+          type="button"
+          @click="signInTwitter"
+        >
+          <img class="button__icon" src="../assets/images/twitter-icon.svg" />
+          Log In with Twitter
         </button>
         <button
           class="button"
@@ -94,14 +102,29 @@ export default {
     },
     signInFb () {
       this.$store.dispatch('signInFb')
+    },
+    signInTwitter () {
+      this.$store.dispatch('signInTwitter')
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.fb-button {
+.button {
   padding: 0 15px;
-  background-color: #4267b2;
+  &--facebook {
+    background-color: #4267b2;
+    border-color: #4267b2;
+  }
+  &--twitter {
+    background-color: #1da1f2;
+    border-color: #1da1f2;
+
+    .button__icon {
+      padding: 4px;
+    }
+  }
+
   &__icon {
     width: 40px;
     height: 40px;

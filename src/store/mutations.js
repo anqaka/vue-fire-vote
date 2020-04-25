@@ -13,7 +13,8 @@ export default {
   SET_AUTH_USER: (state, { user }) => {
     state.user = {
       id: user.uid,
-      email: user.email
+      email: user.email,
+      displayName: user.displayName
     }
   }
 }
