@@ -6,6 +6,7 @@
     <p>
       You have to be logged in to add your proposition
     </p>
+    <loader v-if="loading" class="loader--overlay" />
     <form @submit.prevent="addTopic">
       <div class="input">
         <label for="title">
@@ -37,12 +38,15 @@
         </button>
       </div>
     </form>
-    <p>{{ message }}</p>
   </section>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import Loader from './Loader.vue'
 export default {
+  components: {
+    Loader
+  },
   computed: {
     ...mapGetters({
       isLoggedIn: 'isLoggedIn'
@@ -54,14 +58,17 @@ export default {
         title: '',
         description: ''
       },
-      message: ''
+      loading: false
     }
   },
   methods: {
     addTopic () {
+      this.loading = true
       this.$store.dispatch('addTopic', {
         title: this.formFields.title,
         description: this.formFields.description
+      }).then(() => {
+        this.loading = false
       })
     }
   }
