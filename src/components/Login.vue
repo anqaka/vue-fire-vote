@@ -37,6 +37,14 @@
           Log In
         </button>
         <button
+          class="button fb-button"
+          type="button"
+          @click="signInFb"
+        >
+          <img class="fb-button__icon" src="../assets/images/fb-icon.svg" />
+          Log In with Facebook
+        </button>
+        <button
           class="button"
           type="button"
           @click="createUser"
@@ -52,8 +60,10 @@
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex'
+import fb from '@/mixins/facebook.js'
 export default {
   directives: { focus: focus },
+  mixins: [fb],
   data: () => ({
     formData: {
       email: '',
@@ -81,7 +91,21 @@ export default {
         email: this.formData.email,
         password: this.formData.password
       })
+    },
+    signInFb () {
+      this.$store.dispatch('signInFb')
     }
   }
 }
 </script>
+<style lang="scss" scoped>
+.fb-button {
+  padding: 0 15px;
+  background-color: #4267b2;
+  &__icon {
+    width: 40px;
+    height: 40px;
+    margin-right: $spacer--xs;
+  }
+}
+</style>
