@@ -13,6 +13,7 @@ import { mapGetters } from 'vuex'
 import AddTopic from './components/AddTopic.vue'
 import TopicList from './components/TopicList.vue'
 import UserState from './components/UserState.vue'
+import notification from './mixins/notification.js'
 
 export default {
   name: 'App',
@@ -21,9 +22,7 @@ export default {
     TopicList,
     UserState
   },
-  mounted () {
-    this.$store.dispatch('onAuthStateChanged')
-  },
+  mixins: [notification],
   computed: {
     ...mapGetters({
       isLoggedIn: 'isLoggedIn'

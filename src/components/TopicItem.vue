@@ -17,6 +17,7 @@
       </div>
       <button
         :class="[
+          'button',
           'topics-list__item-upvote',
           {
             'topics-list__item-upvote--voted': isVoted

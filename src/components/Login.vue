@@ -30,12 +30,14 @@
       </div>
       <div class="form-section__action">
         <button
+          class="button"
           type="button"
           @click="signIn"
         >
           Log In
         </button>
         <button
+          class="button"
           type="button"
           @click="createUser"
         >

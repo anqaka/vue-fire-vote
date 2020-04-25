@@ -33,7 +33,7 @@
         />
       </div>
       <div class="form-section__action">
-        <button type="submit">
+        <button class="button" type="submit">
           Add Topic
         </button>
       </div>

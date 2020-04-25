@@ -3,8 +3,15 @@ import Vue from 'vue'
 import { rtdbPlugin } from 'vuefire'
 import App from './App.vue'
 import store from './store'
+import VueIziToast from 'vue-izitoast'
+import 'izitoast/dist/css/iziToast.css'
+
+const options = {
+  position: 'topRight'
+}
 
 Vue.use(rtdbPlugin)
+Vue.use(VueIziToast, options)
 
 new Vue({
   store,
