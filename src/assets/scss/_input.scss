@@ -15,4 +15,16 @@
       min-height: 150px;
     }
   }
+
+  &--error {
+    .input__field {
+      border: 1px solid $error;
+    }
+  }
+  .error {
+    text-align: left;
+    margin-top: 4px;
+    font-size: $font-size-small;
+    color: $error;
+  }
 }

@@ -69,13 +69,19 @@ export default {
       }, { root: true })
     }
   },
-  signIn (context, user) {
+  signIn ({ commit }, user) {
     auth.signInWithEmailAndPassword(
       user.email,
       user.password
-    )
+    ).catch((err) => {
+      commit('notification/push', {
+        message: err.message,
+        title: 'Error',
+        type: 'error'
+      }, { root: true })
+    })
   },
-  signInFb (commit) {
+  signInFb ({ commit }) {
     auth.signInWithPopup(fbProvider).then((result) => {
       const token = result.credential.accessToken
       const user = result.user
@@ -88,53 +94,73 @@ export default {
       }, { root: true })
     })
   },
-  signInTwitter (context) {
+  signInTwitter ({ commit }) {
     auth.signInWithPopup(twitterProvider).then((result) => {
       const token = result.credential.accessToken
       const user = result.user
       console.log('user', user, 'token', token)
     }).catch((err) => {
-      context.commit('notification/push', {
+      commit('notification/push', {
         message: err.message,
         title: 'Error',
         type: 'error'
       }, { root: true })
     })
   },
-  signInGithub (context) {
+  signInGithub ({ commit }) {
     auth.signInWithPopup(githubProvider).then((result) => {
       const token = result.credential.accessToken
       const user = result.user
       console.log('user', user, 'token', token)
     }).catch((err) => {
-      context.commit('notification/push', {
+      commit('notification/push', {
         message: err.message,
         title: 'Error',
         type: 'error'
       }, { root: true })
     })
   },
-  signInGoogle (context) {
+  signInGoogle ({ commit }) {
     auth.signInWithPopup(googleProvider).then((result) => {
       const token = result.credential.accessToken
       const user = result.user
       console.log('user', user, 'token', token)
     }).catch((err) => {
-      context.commit('notification/push', {
+      commit('notification/push', {
         message: err.message,
         title: 'Error',
         type: 'error'
       }, { root: true })
     })
   },
-  createUser (context, user) {
+  createUser ({ commit }, user) {
     auth.createUserWithEmailAndPassword(
       user.email,
       user.password
-    )
+    ).catch((err) => {
+      commit('notification/push', {
+        message: err.message,
+        title: 'Error',
+        type: 'error'
+      }, { root: true })
+    })
   },
-  signOut () {
-    auth.signOut()
+  signOut ({ commit }) {
+    auth
+      .signOut()
+      .then(() => {
+        commit('notification/push', {
+          message: 'You logged out successfully',
+          title: 'Success',
+          type: 'success'
+        }, { root: true })
+      }).catch((err) => {
+        commit('notification/push', {
+          message: err.message,
+          title: 'Error',
+          type: 'error'
+        }, { root: true })
+      })
   },
   upvote: firebaseAction(({ state, dispatch, commit }, data) => {
     return userRef.child(state.user.id).child('votes').push({
