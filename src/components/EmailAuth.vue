@@ -132,13 +132,12 @@
   </div>
 </template>
 <script>
-import VButton from '@/components/Button.vue'
 import { validationMixin } from 'vuelidate'
 import { required, email } from 'vuelidate/lib/validators'
 
 export default {
   components: {
-    VButton
+    VButton: () => import('@/components/Button.vue')
   },
   data () {
     return {

@@ -16,7 +16,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import AddTopic from './components/AddTopic.vue'
 import TopicList from './components/TopicList.vue'
 import UserState from './components/UserState.vue'
 import notification from './mixins/notification.js'
@@ -24,7 +23,7 @@ import notification from './mixins/notification.js'
 export default {
   name: 'App',
   components: {
-    AddTopic,
+    AddTopic: () => import('@/components/AddTopic.vue'),
     TopicList,
     UserState
   },

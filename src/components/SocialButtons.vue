@@ -40,19 +40,14 @@
 </template>
 <script>
 import fb from '@/mixins/facebook.js'
-import VButton from '@/components/Button.vue'
-import FbIcon from '@/assets/icons/fb-i.svg'
-import GithubIcon from '@/assets/icons/github-i.svg'
-import GoogleIcon from '@/assets/icons/google-i.svg'
-import TwitterIcon from '@/assets/icons/twitter-i.svg'
 export default {
   mixins: [fb],
   components: {
-    VButton,
-    FbIcon,
-    GithubIcon,
-    GoogleIcon,
-    TwitterIcon
+    VButton: () => import('@/components/Button.vue'),
+    FbIcon: () => import('@/assets/icons/fb-i.svg'),
+    GithubIcon: () => import('@/assets/icons/github-i.svg'),
+    GoogleIcon: () => import('@/assets/icons/google-i.svg'),
+    TwitterIcon: () => import('@/assets/icons/twitter-i.svg')
   },
   data () {
     return {

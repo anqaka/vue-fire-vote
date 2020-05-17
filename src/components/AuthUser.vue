@@ -20,15 +20,11 @@
   </section>
 </template>
 <script>
-import SocialButtons from '@/components/SocialButtons.vue'
-import EmailAuth from '@/components/EmailAuth.vue'
-import VButton from '@/components/Button.vue'
-
 export default {
   components: {
-    EmailAuth,
-    SocialButtons,
-    VButton
+    EmailAuth: () => import('@/components/EmailAuth.vue'),
+    SocialButtons: () => import('@/components/SocialButtons.vue'),
+    VButton: () => import('@/components/Button.vue')
   },
   data () {
     return {

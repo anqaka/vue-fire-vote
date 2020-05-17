@@ -31,13 +31,11 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import Loader from './Loader.vue'
-import TopicItem from './TopicItem.vue'
 
 export default {
   components: {
-    Loader,
-    TopicItem
+    Loader: () => import('@/components/Loader.vue'),
+    TopicItem: () => import('@/components/TopicItem.vue')
   },
   mounted () {
     this.$store.dispatch('bindTopics').then(() => {

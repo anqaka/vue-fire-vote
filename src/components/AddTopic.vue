@@ -60,15 +60,13 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import Loader from '@/components/Loader.vue'
-import VButton from '@/components/Button.vue'
 import { required } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 
 export default {
   components: {
-    Loader,
-    VButton
+    Loader: () => import('@/components/Loader.vue'),
+    VButton: () => import('@/components/Button.vue')
   },
   computed: {
     ...mapGetters({

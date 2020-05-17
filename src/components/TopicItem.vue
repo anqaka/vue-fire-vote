@@ -32,10 +32,10 @@
 </template>
 <script>
 import { mapGetters, mapState } from 'vuex'
-import VButton from '@/components/Button.vue'
+
 export default {
   components: {
-    VButton
+    VButton: () => import('@/components/Button.vue')
   },
   props: {
     description: {
