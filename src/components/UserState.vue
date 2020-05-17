@@ -13,6 +13,7 @@
   </section>
 </template>
 <script>
+import { auth } from './../db'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -38,7 +39,21 @@ export default {
   },
   methods: {
     logout () {
-      this.$store.dispatch('signOut')
+      auth
+        .signOut()
+        .then(() => {
+          this.$store.commit('notification/push', {
+            message: 'You logged out successfully',
+            title: 'Success',
+            type: 'success'
+          }, { root: true })
+        }).catch((err) => {
+          this.$store.commit('notification/push', {
+            message: err.message,
+            title: 'Error',
+            type: 'error'
+          }, { root: true })
+        })
     }
   }
 }

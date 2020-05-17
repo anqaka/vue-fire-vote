@@ -132,6 +132,7 @@
   </div>
 </template>
 <script>
+import { auth } from './../db'
 import { validationMixin } from 'vuelidate'
 import { required, email } from 'vuelidate/lib/validators'
 
@@ -192,11 +193,15 @@ export default {
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'
-        this.$store.dispatch('signIn', {
-          email: this.formData.email,
-          password: this.formData.password
-        }).then(() => {
-          this.submitStatus = 'OK'
+        auth.signInWithEmailAndPassword(
+          this.formData.email,
+          this.formData.password
+        ).catch((err) => {
+          this.$store.commit('notification/push', {
+            message: err.message,
+            title: 'Error',
+            type: 'error'
+          }, { root: true })
         })
       }
     },
@@ -206,11 +211,15 @@ export default {
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'
-        this.$store.dispatch('createUser', {
-          email: this.formData.email,
-          password: this.formData.password
-        }).then(() => {
-          this.submitStatus = 'OK'
+        auth.createUserWithEmailAndPassword(
+          this.formData.email,
+          this.formData.password
+        ).catch((err) => {
+          this.$sore.commit('notification/push', {
+            message: err.message,
+            title: 'Error',
+            type: 'error'
+          }, { root: true })
         })
       }
     },

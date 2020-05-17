@@ -40,6 +40,8 @@
 </template>
 <script>
 import fb from '@/mixins/facebook.js'
+import { auth, fbProvider, githubProvider, googleProvider, twitterProvider } from '../db'
+
 export default {
   mixins: [fb],
   components: {
@@ -71,18 +73,68 @@ export default {
     }
   },
   methods: {
-    signInFb (ev) {
-      this.$store.dispatch('signInFb')
+    signInFb () {
+      auth.signInWithPopup(fbProvider).then((result) => {
+        const token = result.credential.accessToken
+        const user = result.user
+        console.log('user', user, 'token', token)
+      }).catch((err) => {
+        this.$store.commit('notification/push', {
+          message: err.message,
+          title: 'Error',
+          type: 'error'
+        }, { root: true })
+      })
     },
     signInTwitter () {
-      this.$store.dispatch('signInTwitter')
+      auth.signInWithPopup(twitterProvider).then((result) => {
+        // const token = result.credential.accessToken
+        // const user = result.user
+      }).catch((err) => {
+        this.$store.commit('notification/push', {
+          message: err.message,
+          title: 'Error',
+          type: 'error'
+        }, { root: true })
+      })
     },
     signInGithub () {
-      this.$store.dispatch('signInGithub')
+      auth.signInWithPopup(githubProvider).then((result) => {
+        // const token = result.credential.accessToken
+        // const user = result.user
+        // console.log('user', user, 'token', token)
+      }).catch((err) => {
+        this.$store.commit('notification/push', {
+          message: err.message,
+          title: 'Error',
+          type: 'error'
+        }, { root: true })
+      })
     },
     signInGoogle () {
-      this.$store.dispatch('signInGoogle')
+      auth.signInWithPopup(googleProvider).then((result) => {
+        // const token = result.credential.accessToken
+        // const user = result.user
+      }).catch((err) => {
+        this.$store.commit('notification/push', {
+          message: err.message,
+          title: 'Error',
+          type: 'error'
+        }, { root: true })
+      })
     }
+    // signInFb (ev) {
+    //   this.$store.dispatch('signInFb')
+    // },
+    // signInTwitter () {
+    //   this.$store.dispatch('signInTwitter')
+    // },
+    // signInGithub () {
+    //   this.$store.dispatch('signInGithub')
+    // },
+    // signInGoogle () {
+    //   this.$store.dispatch('signInGoogle')
+    // }
   }
 }
 </script>
