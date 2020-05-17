@@ -1,7 +1,7 @@
 <template>
   <section>
     <h2>
-      Pres propositions for MMPL2020
+      Proposition list
     </h2>
       <ul
         v-if="topics.length"
@@ -56,3 +56,9 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.topics-list {
+  list-style: none;
+  padding: 0;
+}
+</style>

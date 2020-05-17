@@ -16,8 +16,29 @@
   cursor: pointer;
   transition: $transition-base;
 
+  &:focus,
+  &:hover,
+  &:active {
+    box-shadow: $box-shadow;
+  }
+
   &:disabled {
     background-color: $gray-light;
     cursor: not-allowed;
+  }
+
+  &--login {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto $spacer__s;
+    padding: 0 $spacer--s 0 $spacer--m;
+  }
+
+  &--link {
+    min-width: unset;
+    border: 0;
+    background-color: transparent;
+    color: $gray-darker;
+    text-decoration: underline;
   }
 }

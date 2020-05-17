@@ -1,39 +1,42 @@
 <template>
-  <li class="topics-list__item">
-    <div class="topics-list__item-content">
-      <h3 class="topics-list__item-title">
+  <li class="topics-list-item">
+    <div class="topics-list-item__content">
+      <h3 class="topics-list-item__title">
         {{ title }}
       </h3>
       <p>
         {{ description }}
       </p>
     </div>
-    <div class="topics-list__item-vote">
+    <div class="topics-list-item__vote">
       <div
-        class="topics-list__item-vote-number"
+        class="topics-list-item__vote-number"
       >
         <h4>Votes:</h4>
         {{ votes }}
       </div>
-      <button
+      <v-button
         :class="[
-          'button',
-          'topics-list__item-upvote',
+          'topics-list-item__upvote',
           {
-            'topics-list__item-upvote--voted': isVoted
+            'topics-list-item__upvote--voted': isVoted
           }
         ]"
         :disabled="voteEnable"
-        @click="isVoted ? downvote(id, votes) : upvote(id, votes)"
+        @btn-event="isVoted ? downvote(id, votes) : upvote(id, votes)"
       >
         {{ actionText }}
-      </button>
+      </v-button>
     </div>
   </li>
 </template>
 <script>
 import { mapGetters, mapState } from 'vuex'
+import VButton from '@/components/Button.vue'
 export default {
+  components: {
+    VButton
+  },
   props: {
     description: {
       type: String,
@@ -86,3 +89,49 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.topics-list-item {
+  display: flex;
+  flex-flow: column nowrap;
+  margin-bottom: $spacer--xl;
+
+  @include mq($screen-sm-min) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__content {
+    flex-grow: 1;
+    text-align: left;
+    padding-top: $spacer--s;
+
+    @include mq($screen-sm-min) {
+      max-width: 70%;
+    }
+  }
+
+  &__title {
+    margin-bottom: $spacer--s;
+  }
+
+  &__vote {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+
+  &__vote-number {
+    padding: $spacer--m;
+  }
+
+  &__upvote {
+    margin: $spacer--m;
+    min-width: 100px;
+
+    &--voted {
+      background-color: $orange;
+    }
+  }
+}
+</style>

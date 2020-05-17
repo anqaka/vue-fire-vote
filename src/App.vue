@@ -1,9 +1,15 @@
 <template>
   <div id="app" class="container">
     <div class="row center-xs">
+      <h1>
+        Topic propositions for MMPL2020
+      </h1>
       <topic-list class="col-xs-12" />
       <user-state class="col-xs-12" />
-      <add-topic v-if="isLoggedIn" class="col-xs-12" />
+      <add-topic
+        v-if="isLoggedIn"
+        class="col-xs-12"
+      />
     </div>
   </div>
 </template>

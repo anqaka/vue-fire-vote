@@ -1,6 +1,5 @@
 export default {
   created () {
-    console.log('dupa')
     window.fbAsyncInit = function () {
       // eslint-disable-next-line no-undef
       FB.init({

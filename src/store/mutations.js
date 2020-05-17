@@ -2,6 +2,7 @@ import { vuexfireMutations } from 'vuexfire'
 
 export default {
   ...vuexfireMutations,
+
   RESET_USER_DATA: (state) => {
     state.user = null
   },

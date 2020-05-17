@@ -3,9 +3,6 @@
     <h2>
       Add your topic proposition
     </h2>
-    <p>
-      You have to be logged in to add your proposition
-    </p>
     <loader v-if="loading" class="loader--overlay" />
     <form @submit.prevent="addTopic">
       <div class="input">
@@ -14,7 +11,7 @@
         </label>
         <input
           id="title"
-          v-model="formFields.title"
+          v-model="title"
           class="input__field"
           type="text"
           placeholder="Topic title"
@@ -26,26 +23,30 @@
         </label>
         <textarea
           id="description"
-          v-model="formFields.description"
+          v-model="description"
           class="input__field input__field--textarea"
           type="text"
           placeholder="Topic description"
         />
       </div>
       <div class="form-section__action">
-        <button class="button" type="submit">
+        <v-button
+          :type="'submit'">
           Add Topic
-        </button>
+        </v-button>
       </div>
     </form>
   </section>
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import Loader from './Loader.vue'
+import Loader from '@/components/Loader.vue'
+import VButton from '@/components/Button.vue'
+
 export default {
   components: {
-    Loader
+    Loader,
+    VButton
   },
   computed: {
     ...mapGetters({
@@ -54,10 +55,8 @@ export default {
   },
   data () {
     return {
-      formFields: {
-        title: '',
-        description: ''
-      },
+      title: '',
+      description: '',
       loading: false
     }
   },
@@ -65,10 +64,12 @@ export default {
     addTopic () {
       this.loading = true
       this.$store.dispatch('addTopic', {
-        title: this.formFields.title,
-        description: this.formFields.description
+        title: this.title,
+        description: this.description
       }).then(() => {
         this.loading = false
+        this.title = ''
+        this.description = ''
       })
     }
   }

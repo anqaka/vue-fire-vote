@@ -1,5 +1,6 @@
 import { firebaseAction } from 'vuexfire'
-import { auth, fbProvider, topicRef, twitterProvider, userRef } from '../db'
+// import { auth, fbProvider, topicRef, userRef } from '../db'
+import { auth, fbProvider, githubProvider, googleProvider, topicRef, twitterProvider, userRef } from '../db'
 
 export default {
   bindTopics: firebaseAction(({ bindFirebaseRef, commit }) => {
@@ -87,13 +88,39 @@ export default {
       }, { root: true })
     })
   },
-  signInTwitter (commit) {
+  signInTwitter (context) {
     auth.signInWithPopup(twitterProvider).then((result) => {
       const token = result.credential.accessToken
       const user = result.user
       console.log('user', user, 'token', token)
     }).catch((err) => {
-      commit('notification/push', {
+      context.commit('notification/push', {
+        message: err.message,
+        title: 'Error',
+        type: 'error'
+      }, { root: true })
+    })
+  },
+  signInGithub (context) {
+    auth.signInWithPopup(githubProvider).then((result) => {
+      const token = result.credential.accessToken
+      const user = result.user
+      console.log('user', user, 'token', token)
+    }).catch((err) => {
+      context.commit('notification/push', {
+        message: err.message,
+        title: 'Error',
+        type: 'error'
+      }, { root: true })
+    })
+  },
+  signInGoogle (context) {
+    auth.signInWithPopup(googleProvider).then((result) => {
+      const token = result.credential.accessToken
+      const user = result.user
+      console.log('user', user, 'token', token)
+    }).catch((err) => {
+      context.commit('notification/push', {
         message: err.message,
         title: 'Error',
         type: 'error'
