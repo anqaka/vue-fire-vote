@@ -22,7 +22,7 @@
 <script>
 export default {
   components: {
-    EmailAuth: () => import('@/components/EmailAuth.vue'),
+    EmailAuth: () => import(/* webpackPrefetch: true */ '@/components/EmailAuth.vue'),
     SocialButtons: () => import('@/components/SocialButtons.vue'),
     VButton: () => import('@/components/Button.vue')
   },
