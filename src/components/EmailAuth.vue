@@ -135,10 +135,11 @@
 import { auth } from './../db'
 import { validationMixin } from 'vuelidate'
 import { required, email } from 'vuelidate/lib/validators'
+import VButton from '@/components/Button.vue'
 
 export default {
   components: {
-    VButton: () => import('@/components/Button.vue')
+    VButton
   },
   data () {
     return {

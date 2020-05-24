@@ -39,13 +39,13 @@
   </div>
 </template>
 <script>
-import fb from '@/mixins/facebook.js'
 import { auth, fbProvider, githubProvider, googleProvider, twitterProvider } from '../db'
+import VButton from '@/components/Button.vue'
 
 export default {
-  mixins: [fb],
+  mixins: [{ fb: () => import('@/mixins/facebook.js') }],
   components: {
-    VButton: () => import('@/components/Button.vue'),
+    VButton,
     FbIcon: () => import('@/assets/icons/fb-i.svg'),
     GithubIcon: () => import('@/assets/icons/github-i.svg'),
     GoogleIcon: () => import('@/assets/icons/google-i.svg'),
@@ -123,18 +123,6 @@ export default {
         }, { root: true })
       })
     }
-    // signInFb (ev) {
-    //   this.$store.dispatch('signInFb')
-    // },
-    // signInTwitter () {
-    //   this.$store.dispatch('signInTwitter')
-    // },
-    // signInGithub () {
-    //   this.$store.dispatch('signInGithub')
-    // },
-    // signInGoogle () {
-    //   this.$store.dispatch('signInGoogle')
-    // }
   }
 }
 </script>

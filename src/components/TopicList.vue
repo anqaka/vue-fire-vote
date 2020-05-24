@@ -7,17 +7,15 @@
         v-if="topics.length"
         class="topics-list"
       >
-        <transition-group name="fade">
-          <topic-item
-            v-for="(item) in topics"
-            :key="item['.key']"
-            :id="item['.key']"
-            :description="item.description"
-            :title="item.title"
-            :votes="item.votes"
-            :author="item.user"
-          />
-        </transition-group>
+        <topic-item
+          v-for="(item) in topics"
+          :key="item['.key']"
+          :id="item['.key']"
+          :description="item.description"
+          :title="item.title"
+          :votes="item.votes"
+          :author="item.user"
+        />
       </ul>
       <transition name="fade">
         <p v-if="!loading && topics.length === 0">
@@ -31,10 +29,11 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import Loader from '@/components/Loader.vue'
 
 export default {
   components: {
-    Loader: () => import('@/components/Loader.vue'),
+    Loader,
     TopicItem: () => import('@/components/TopicItem.vue')
   },
   mounted () {

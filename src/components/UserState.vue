@@ -15,12 +15,15 @@
 <script>
 import { auth } from './../db'
 import { mapGetters } from 'vuex'
+import VButton from '@/components/Button.vue'
+import Loader from '@/components/Loader.vue'
+import AuthUser from '@/components/AuthUser.vue'
 
 export default {
   components: {
-    AuthUser: () => import('@/components/AuthUser.vue'),
-    Loader: () => import('@/components/Loader.vue'),
-    VButton: () => import('@/components/Button.vue')
+    AuthUser,
+    Loader,
+    VButton
   },
   computed: {
     ...mapGetters([
