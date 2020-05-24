@@ -8,6 +8,15 @@ module.exports = {
       }
     }
   },
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: `
+          @import '@/assets/scss/main.scss';
+        `
+      }
+    }
+  },
   chainWebpack: config => {
     const svgRule = config.module.rule('svg')
 
@@ -21,10 +30,6 @@ module.exports = {
       .loader('vue-svg-loader')
   },
   pluginOptions: {
-    'style-resources-loader': {
-      preProcessor: 'scss',
-      patterns: [path.resolve(__dirname, './src/assets/scss/main.scss')]
-    },
     webpackBundleAnalyzer: {
       openAnalyzer: true
     }
@@ -40,4 +45,4 @@ module.exports = {
       background_color: '#FFFFFF'
     }
   }
-}
+};
