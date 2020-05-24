@@ -41,9 +41,10 @@
 <script>
 import { auth, fbProvider, githubProvider, googleProvider, twitterProvider } from '../db'
 import VButton from '@/components/Button.vue'
+import fb from '@/mixins/facebook.js'
 
 export default {
-  mixins: [{ fb: () => import('@/mixins/facebook.js') }],
+  mixins: [fb],
   components: {
     VButton,
     FbIcon: () => import('@/assets/icons/fb-i.svg'),

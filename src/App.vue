@@ -18,6 +18,7 @@
 import { mapGetters } from 'vuex'
 import TopicList from '@/components/TopicList.vue'
 import UserState from '@/components/UserState.vue'
+import notification from '@/mixins/notification.js'
 
 export default {
   name: 'App',
@@ -26,7 +27,7 @@ export default {
     TopicList,
     UserState
   },
-  mixins: [{ notification: () => import('@/mixins/notification.js') }],
+  mixins: [notification],
   computed: {
     ...mapGetters({
       isLoggedIn: 'isLoggedIn'
