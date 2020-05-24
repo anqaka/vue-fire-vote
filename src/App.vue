@@ -1,29 +1,32 @@
 <template>
-  <div id="app" class="container">
+  <main id="app" class="container">
     <div class="row center-xs">
+      <h1>
+        Topic propositions for MMPL2020
+      </h1>
       <topic-list class="col-xs-12" />
       <user-state class="col-xs-12" />
-      <add-topic v-if="isLoggedIn" class="col-xs-12" />
+      <add-topic
+        v-if="isLoggedIn"
+        class="col-xs-12"
+      />
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import AddTopic from './components/AddTopic.vue'
-import TopicList from './components/TopicList.vue'
-import UserState from './components/UserState.vue'
+import TopicList from '@/components/TopicList.vue'
+import UserState from '@/components/UserState.vue'
 
 export default {
   name: 'App',
   components: {
-    AddTopic,
+    AddTopic: () => import('@/components/AddTopic.vue'),
     TopicList,
     UserState
   },
-  mounted () {
-    this.$store.dispatch('onAuthStateChanged')
-  },
+  mixins: [{ notification: () => import('@/mixins/notification.js') }],
   computed: {
     ...mapGetters({
       isLoggedIn: 'isLoggedIn'

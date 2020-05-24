@@ -4,8 +4,8 @@
   align-items: center;
   justify-content: center;
   min-width: 150px;
-  min-height: 56px;
-  padding: 0 $spacer--m;
+  min-height: 48px;
+  padding: 0 $spacer--s;
   background-color: $gray-dark;
   border: 1px solid $gray-dark;
   font-family: $font-family-base;
@@ -16,12 +16,29 @@
   cursor: pointer;
   transition: $transition-base;
 
+  &:focus,
+  &:hover,
+  &:active {
+    box-shadow: $box-shadow;
+  }
+
   &:disabled {
     background-color: $gray-light;
     cursor: not-allowed;
   }
-}
 
-button {
-  @extend .button;
+  &--login {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto $spacer__s;
+    padding: 0 $spacer--s 0 $spacer--m;
+  }
+
+  &--link {
+    min-width: unset;
+    border: 0;
+    background-color: transparent;
+    color: $gray-darker;
+    text-decoration: underline;
+  }
 }

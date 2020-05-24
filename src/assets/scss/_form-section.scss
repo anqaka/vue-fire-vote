@@ -1,13 +1,14 @@
 .form-section {
+  position: relative;
   margin: $spacer--xl;
   box-shadow: $box-shadow;
   padding: $spacer--l;
 
   &__action {
     margin: $spacer--l 0;
-  }
-  &__message {
-    color: red;
-    font-size: $font-size-small;
+    @include mq($screen-sm-min) {
+      max-width: 80%;
+      margin: 0 auto;
+    }
   }
 }

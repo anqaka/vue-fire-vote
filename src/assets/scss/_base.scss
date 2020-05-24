@@ -4,10 +4,6 @@
   box-sizing: border-box;
 }
 
-.margin-x {
-  margin: $spacer--m 0;
-}
-
 html,
 body {
   min-width: 320px;
@@ -19,14 +15,18 @@ body {
   scroll-behavior: smooth;
 }
 
-.main {
-  padding: 0 $spacer--m;
-}
-
 section {
   margin: $spacer--l 0;
 }
 
 p {
   margin-bottom: $spacer--s;
+}
+
+.main {
+  padding: 0 $spacer--m;
+}
+
+.margin-x {
+  margin: $spacer--m 0;
 }

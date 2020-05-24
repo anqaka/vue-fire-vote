@@ -3,46 +3,73 @@
     <h2>
       Add your topic proposition
     </h2>
-    <p>
-      You have to be logged in to add your proposition
-    </p>
+    <loader v-if="loading" class="loader--overlay" />
     <form @submit.prevent="addTopic">
-      <div class="input">
+      <div :class="['input', { 'input--error': $v.title.$error }]">
         <label for="title">
           Topic title
         </label>
         <input
           id="title"
-          v-model="formFields.title"
+          v-model.trim="$v.title.$model"
           class="input__field"
           type="text"
           placeholder="Topic title"
         >
+        <div
+          v-if="!$v.title.required"
+          class="error"
+        >
+          Field is required
+        </div>
       </div>
-      <div class="input">
-        <label for="description">
+      <div :class="['input', { 'input--error': $v.description.$error }]">
+        <label for="description" class="form__label">
           Topic description
         </label>
         <textarea
           id="description"
-          v-model="formFields.description"
+          v-model.trim="$v.description.$model"
           class="input__field input__field--textarea"
           type="text"
           placeholder="Topic description"
         />
+        <div
+          v-if="!$v.description.required"
+          class="error"
+        >
+          Field is required
+        </div>
       </div>
       <div class="form-section__action">
-        <button type="submit">
+        <v-button
+          :type="'submit'"
+          :disabled="$v.$invalid"
+        >
           Add Topic
-        </button>
+        </v-button>
       </div>
     </form>
-    <p>{{ message }}</p>
+    <p class="typo__p" v-if="submitStatus === 'OK'">
+      Thanks for your submission!
+    </p>
+    <p class="typo__p" v-if="submitStatus === 'ERROR'">
+      Please fill the form correctly.
+    </p>
   </section>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { required } from 'vuelidate/lib/validators'
+import { validationMixin } from 'vuelidate'
+import Loader from '@/components/Loader.vue'
+import VButton from '@/components/Button.vue'
+
 export default {
+  components: {
+    Loader,
+    VButton
+  },
   computed: {
     ...mapGetters({
       isLoggedIn: 'isLoggedIn'
@@ -50,19 +77,39 @@ export default {
   },
   data () {
     return {
-      formFields: {
-        title: '',
-        description: ''
-      },
-      message: ''
+      title: '',
+      description: '',
+      loading: false,
+      submitStatus: null
+    }
+  },
+  mixins: [validationMixin],
+  validations: {
+    title: {
+      required
+    },
+    description: {
+      required
     }
   },
   methods: {
     addTopic () {
-      this.$store.dispatch('addTopic', {
-        title: this.formFields.title,
-        description: this.formFields.description
-      })
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR'
+      } else {
+        this.loading = true
+        this.submitStatus = 'PENDING'
+        this.$store.dispatch('addTopic', {
+          title: this.title,
+          description: this.description
+        }).then(() => {
+          this.loading = false
+          this.title = ''
+          this.description = ''
+          this.submitStatus = 'OK'
+        })
+      }
     }
   }
 }
