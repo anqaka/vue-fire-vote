@@ -20,7 +20,7 @@
           'topics-list-item__upvote',
           {
             'topics-list-item__upvote--voted': isVoted,
-            'topics-list-item__upvote--disabled': !voteEnable
+            'topics-list-item__upvote--disabled': voteDisabled
           }
         ]"
         @btn-event="isVoted ? downvote(id, votes) : upvote(id, votes)"
@@ -80,8 +80,9 @@ export default {
     isVoted () {
       return this.userVotes.some(item => item[this.id])
     },
-    voteEnable () {
-      return !this.isLoggedIn || (this.author !== this.user.id)
+    voteDisabled () {
+      return !this.isLoggedIn || (
+        this.isLoggedIn && (this.user ? this.author === this.user.id : false))
     },
     tooltipText () {
       let message = ''
@@ -97,12 +98,12 @@ export default {
   },
   methods: {
     upvote (id, votes) {
-      if (this.voteEnable) {
+      if (!this.voteDisabled) {
         this.$store.dispatch('upvote', { id, votes })
       }
     },
     downvote (id, votes) {
-      if (this.voteEnable) {
+      if (!this.voteDisabled) {
         const userVote = this.userVotes.find(item => item[id] === true)
         const itemKey = userVote['.key']
         this.$store.dispatch('downvote', { id, itemKey, votes })
