@@ -1,0 +1,110 @@
+.tooltip {
+  display: block !important;
+  z-index: 10000;
+
+  .tooltip-inner {
+    background: black;
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+    padding: $spacer--xs $spacer--s;
+  }
+
+  .tooltip-arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    position: absolute;
+    margin: $spacer--xs;
+    border-color: $gray-dark;
+    z-index: 1;
+  }
+
+  &[x-placement^="top"] {
+    margin-bottom: $spacer--xs;
+
+    .tooltip-arrow {
+      border-width: $spacer--xs $spacer--xs 0 $spacer--xs;
+      border-left-color: transparent !important;
+      border-right-color: transparent !important;
+      border-bottom-color: transparent !important;
+      bottom: -$spacer--xs;
+      left: calc(50% - #{$spacer--xs});
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  &[x-placement^="bottom"] {
+    margin-top: $spacer--xs;
+
+    .tooltip-arrow {
+      border-width: 0 $spacer--xs $spacer--xs $spacer--xs;
+      border-left-color: transparent !important;
+      border-right-color: transparent !important;
+      border-top-color: transparent !important;
+      top: -$spacer--xs;
+      left: calc(50% - #{$spacer--xs});
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  &[x-placement^="right"] {
+    margin-left: $spacer--xs;
+
+    .tooltip-arrow {
+      border-width: $spacer--xs $spacer--xs $spacer--xs 0;
+      border-left-color: transparent !important;
+      border-top-color: transparent !important;
+      border-bottom-color: transparent !important;
+      left: -$spacer--xs;
+      top: calc(50% - #{$spacer--xs});
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  &[x-placement^="left"] {
+    margin-right: $spacer--xs;
+
+    .tooltip-arrow {
+      border-width: $spacer--xs 0 $spacer--xs $spacer--xs;
+      border-top-color: transparent !important;
+      border-right-color: transparent !important;
+      border-bottom-color: transparent !important;
+      right: -$spacer--xs;
+      top: calc(50% - #{$spacer--xs});
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  &.popover {
+    $color: #f9f9f9;
+
+    .popover-inner {
+      background: $color;
+      color: $black;
+      padding: $spacer--m;
+      border-radius: $spacer--xs;
+      box-shadow: $box-shadow;
+    }
+
+    .popover-arrow {
+      border-color: $color;
+    }
+  }
+
+  &[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .15s, visibility .15s;
+  }
+
+  &[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .15s;
+  }
+}
