@@ -55,7 +55,7 @@
           class="input__field"
           type="email"
           placeholder="email"
-          autocomplete=""
+          autocomplete="email"
         >
         <div
           v-if="!$v.formData.email.required"
@@ -80,6 +80,7 @@
           class="input__field"
           type="password"
           placeholder="password"
+          autocomplete="current-password"
         >
         <div
           v-if="!$v.formData.password.required"
