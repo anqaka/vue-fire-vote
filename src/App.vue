@@ -7,12 +7,15 @@
       <div class="col-xs-12">
         <p>Some text that explain what is the page for</p>
         <p>
-          This page allows as to collect topic that congerence's participants are interested in. <br> It helps speakers to choose their subjects and us t choose thise which fit your need. <br>
+          This page allows as to collect topic that congerence's participants are interested in. <br> It helps speakers to choose their subjects and us t choose thise which fit your need.
+
+        </p>
+        <p v-if="!isLoggedIn">
           You have to be logged in to vote for a topic or add your own proposition.
         </p>
       </div>
-      <topic-list class="col-xs-12" />
       <user-state class="col-xs-12" />
+      <topic-list class="col-xs-12" />
       <add-topic
         v-if="isLoggedIn"
         class="col-xs-12"

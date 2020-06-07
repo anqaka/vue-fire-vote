@@ -151,9 +151,6 @@ export default {
   }
 
   &__icon {
-    display: block;
-    width: 24px;
-    height: 24px;
     margin-right: $spacer--xs;
   }
 }
