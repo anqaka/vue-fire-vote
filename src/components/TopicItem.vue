@@ -159,6 +159,8 @@ export default {
     margin: $spacer--m;
     min-width: 56px;
     height: 56px;
+    border: 2px solid $orange;
+    background-color: $white;
 
     .button__icon {
       fill: $orange;
@@ -176,7 +178,8 @@ export default {
     }
 
     &--disabled {
-      @extend .button:disabled;
+      cursor: not-allowed;
+      background-color: $gray-lighter;
     }
   }
 }

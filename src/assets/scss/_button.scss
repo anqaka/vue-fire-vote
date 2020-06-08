@@ -23,8 +23,8 @@
   }
 
   &:disabled {
-    background-color: lighten($gray-dark, 60%);
-    border-color: lighten($gray-dark, 60%);
+    background-color: $gray-lighter;
+    border-color: $gray-lighter;
     cursor: not-allowed;
   }
 
