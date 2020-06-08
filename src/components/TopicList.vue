@@ -1,7 +1,7 @@
 <template>
   <section>
     <h2>
-      Proposition list
+      List of proposed topics
     </h2>
       <ul
         v-if="topics.length"

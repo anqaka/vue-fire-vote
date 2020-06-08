@@ -2,7 +2,7 @@
   <main id="app" class="container">
     <div class="row center-xs">
       <h1 class="col-xs-12">
-        List of proposed topics for MMPL2020
+        Magento 2020 subjects voter
       </h1>
       <div class="col-xs-12">
         <p>Some text that explain what is the page for</p>
