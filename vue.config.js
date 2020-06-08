@@ -1,4 +1,3 @@
-const path = require('path')
 module.exports = {
   css: {
     loaderOptions: {
@@ -37,4 +36,4 @@ module.exports = {
       background_color: '#FFFFFF'
     }
   }
-};
+}

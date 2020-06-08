@@ -1,7 +1,12 @@
 <template>
   <section class="form-section">
     <h2>
-      You have to be logged in to vote <br />& add your topic's proposition
+      <template v-if="!emailPass">
+        Choose your log in method
+      </template>
+      <template v-else>
+        Log in with email & password
+      </template>
     </h2>
     <social-buttons
       v-if="!emailPass"
@@ -17,6 +22,12 @@
       v-if="emailPass"
       :emailPass.sync="emailPass"
     />
+    <v-button
+      class="button--login button--link"
+      @btn-event="$emit('hide-auth')"
+    >
+      Hide login section
+    </v-button>
   </section>
 </template>
 <script>

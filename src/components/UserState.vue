@@ -1,15 +1,43 @@
 <template>
   <section class="col-xs-12 col-md-8 login-section">
-    <transition>
-      <v-button
-        v-if="isLoggedIn"
-        @btn-event="logout"
-      >
-        Logout
-      </v-button>
-      <auth-user v-else />
-    </transition>
-    <loader v-if="loading" class="loader--overlay"/>
+      <transition name="fade">
+        <div
+          v-if="isLoggedIn"
+          class="col-xs-12"
+        >
+          Hi
+          <span class="login-section__user">
+            {{ user.displayName || user.email }}
+          </span>!
+          <br>
+          Now you can vote on proposed topic or add your own proposition.
+          <br>
+          <v-button
+            :class="'button--link'"
+            @btn-event="logout"
+          >
+            Logout
+          </v-button>
+        </div>
+      </transition>
+      <transition name="fade">
+        <v-button
+          v-if="!isLoggedIn && !showLogin"
+          @btn-event="showLogin = true"
+        >
+          Log in or create an account
+        </v-button>
+      </transition>
+      <transition name="fade">
+        <auth-user
+          v-if="showLogin && !isLoggedIn"
+          @hide-auth="showLogin = false"
+        />
+      </transition>
+    <loader
+      v-if="loading"
+      class="loader--overlay"
+    />
   </section>
 </template>
 <script>
@@ -27,12 +55,14 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'isLoggedIn'
+      'isLoggedIn',
+      'user'
     ])
   },
   data () {
     return {
-      loading: true
+      loading: true,
+      showLogin: false
     }
   },
   mounted () {
@@ -64,5 +94,9 @@ export default {
 <style lang="scss" scoped>
 .login-section {
   position: relative;
+
+  &__user {
+    font-weight: bold;
+  }
 }
 </style>

@@ -55,7 +55,7 @@
           class="input__field"
           type="email"
           placeholder="email"
-          autocomplete=""
+          autocomplete="email"
         >
         <div
           v-if="!$v.formData.email.required"
@@ -80,6 +80,7 @@
           class="input__field"
           type="password"
           placeholder="password"
+          autocomplete="current-password"
         >
         <div
           v-if="!$v.formData.password.required"
@@ -212,11 +213,19 @@ export default {
         this.submitStatus = 'ERROR'
       } else {
         this.submitStatus = 'PENDING'
+        const self = this
         auth.createUserWithEmailAndPassword(
           this.formData.email,
           this.formData.password
-        ).catch((err) => {
-          this.$sore.commit('notification/push', {
+        ).then((result) => {
+          result.user.updateProfile({
+            displayName: `${this.formData.firstname} ${this.formData.lastname}`
+          }).then(() => {
+            const user = auth.currentUser
+            self.$store.commit('SET_AUTH_USER', { user })
+          })
+        }).catch((err) => {
+          this.$store.commit('notification/push', {
             message: err.message,
             title: 'Error',
             type: 'error'

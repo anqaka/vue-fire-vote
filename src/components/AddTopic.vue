@@ -4,7 +4,10 @@
       Add your topic proposition
     </h2>
     <loader v-if="loading" class="loader--overlay" />
-    <form @submit.prevent="addTopic">
+    <form
+      v-if="submitStatus !== 'OK'"
+      @submit.prevent="addTopic"
+    >
       <div :class="['input', { 'input--error': $v.title.$error }]">
         <label for="title">
           Topic title
@@ -29,7 +32,7 @@
         </label>
         <textarea
           id="description"
-          v-model.trim="$v.description.$model"
+          v-model="$v.description.$model"
           class="input__field input__field--textarea"
           type="text"
           placeholder="Topic description"
@@ -44,16 +47,25 @@
       <div class="form-section__action">
         <v-button
           :type="'submit'"
-          :disabled="$v.$invalid"
         >
           Add Topic
         </v-button>
       </div>
     </form>
-    <p class="typo__p" v-if="submitStatus === 'OK'">
-      Thanks for your submission!
-    </p>
-    <p class="typo__p" v-if="submitStatus === 'ERROR'">
+    <div v-if="submitStatus === 'OK'">
+      <p>
+        Thanks for your submission!
+      </p>
+      <v-button
+        @btn-event="submitStatus = null"
+      >
+        Add another topic
+      </v-button>
+    </div>
+    <p
+      v-if="submitStatus === 'ERROR'"
+      class="submit-error"
+    >
       Please fill the form correctly.
     </p>
   </section>
@@ -104,6 +116,7 @@ export default {
           title: this.title,
           description: this.description
         }).then(() => {
+          this.$v.$reset()
           this.loading = false
           this.title = ''
           this.description = ''
@@ -114,3 +127,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.submit-error {
+  color: $error;
+}
+</style>

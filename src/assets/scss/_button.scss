@@ -23,7 +23,8 @@
   }
 
   &:disabled {
-    background-color: $gray-light;
+    background-color: $gray-lighter;
+    border-color: $gray-lighter;
     cursor: not-allowed;
   }
 
@@ -40,5 +41,12 @@
     background-color: transparent;
     color: $gray-darker;
     text-decoration: underline;
+  }
+
+  &__icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    transition: $transition-base;
   }
 }
