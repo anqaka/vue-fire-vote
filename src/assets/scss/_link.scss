@@ -1,0 +1,13 @@
+.link {
+    font-weight: bold;
+    color: $gray-darker;
+    text-decoration: underline;
+
+    &.router-link-exact-active {
+      color: $orange;
+    }
+}
+
+a {
+    @extend .link;
+}

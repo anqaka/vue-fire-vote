@@ -17,5 +17,9 @@ export default {
       email: user.email,
       displayName: user.displayName
     }
+  },
+
+  LOAD_TOPICS: (state, payload) => {
+    state.topicsLoaded = payload
   }
 }

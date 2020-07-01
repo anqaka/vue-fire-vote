@@ -4,7 +4,11 @@ import { auth, topicRef, userRef } from '../db'
 export default {
   bindTopics: firebaseAction(({ bindFirebaseRef, commit }) => {
     return bindFirebaseRef('topics', topicRef)
+      .then(() => {
+        commit('LOAD_TOPICS', 1)
+      })
       .catch((err) => {
+        commit('LOAD_TOPICS', 2)
         commit('notification/push', {
           message: err.message,
           title: 'Error',
@@ -98,9 +102,11 @@ export default {
         }, { root: true })
       })
   }),
-  updateVotes: firebaseAction(({ commit }, data) => {
+  updateVotes: firebaseAction(({ commit, dispatch }, data) => {
     return topicRef.child(data.id).update({
       votes: data.votes
+    }).then(() => {
+      dispatch('bindUser')
     }).catch((err) => {
       commit('notification/push', {
         message: err.message,

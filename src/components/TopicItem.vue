@@ -1,11 +1,27 @@
 <template>
-  <li class="topics-list-item">
+  <li
+    v-if="topic"
+    :id="id"
+    class="topics-list-item"
+  >
     <div class="topics-list-item__content">
       <h3 class="topics-list-item__title">
-        {{ title }}
+        {{ topic.title }}
+      </h3>
+      <h3>
+        <router-link
+          :to="{
+            name: 'topic',
+            params: {
+              id: id
+            }
+          }"
+        >
+          {{ topic.title }}
+        </router-link>
       </h3>
       <p>
-        {{ description }}
+        {{ topic.description }}
       </p>
     </div>
     <div class="topics-list-item__vote">
@@ -13,7 +29,7 @@
         class="topics-list-item__vote-number"
       >
         <h4>Votes:</h4>
-        {{ votes }}
+        {{ topic.votes }}
       </div>
       <v-button
         :class="[
@@ -23,7 +39,7 @@
             'topics-list-item__upvote--disabled': voteDisabled
           }
         ]"
-        @btn-event="isVoted ? downvote(id, votes) : upvote(id, votes)"
+        @btn-event="isVoted ? downvote(id, topic.votes) : upvote(id, topic.votes)"
         v-tooltip="tooltipText"
         :aria-label="tooltipText"
       >
@@ -48,23 +64,7 @@ export default {
     LikeIcon: () => import('@/assets/icons/like.svg')
   },
   props: {
-    description: {
-      type: String,
-      required: true
-    },
     id: {
-      type: String,
-      required: true
-    },
-    title: {
-      type: String,
-      required: true
-    },
-    votes: {
-      type: Number,
-      required: true
-    },
-    author: {
       type: String,
       required: true
     }
@@ -72,13 +72,17 @@ export default {
   computed: {
     ...mapState({
       user: state => state.user,
-      userVotes: state => state.userVotes
+      userVotes: state => state.userVotes,
+      topic: state => state.topics[this.index]
     }),
     ...mapGetters({
       isLoggedIn: 'isLoggedIn'
     }),
     isVoted () {
       return this.userVotes.some(item => item[this.id])
+    },
+    topic () {
+      return this.$store.getters.topicById(this.id)
     },
     voteDisabled () {
       return !this.isLoggedIn || (

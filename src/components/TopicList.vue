@@ -11,19 +11,18 @@
           v-for="(item) in topics"
           :key="item['.key']"
           :id="item['.key']"
-          :description="item.description"
-          :title="item.title"
-          :votes="item.votes"
-          :author="item.user"
         />
       </ul>
       <transition name="fade">
-        <p v-if="!loading && topics.length === 0">
+        <p v-if="topicsLoaded === 1 && topics.length === 0">
           There is no topic proposition yes. Be the first one!
+        </p>
+        <p v-if="topicsLoaded === 2 && topics.length === 0">
+          En error occured. Refresh your page or try again later.
         </p>
       </transition>
       <transition name="fade">
-        <loader v-if="loading" />
+        <loader v-if="!topicsLoaded" />
       </transition>
   </section>
 </template>
@@ -36,20 +35,11 @@ export default {
     Loader,
     TopicItem: () => import('@/components/TopicItem.vue')
   },
-  mounted () {
-    this.$store.dispatch('bindTopics').then(() => {
-      this.loading = false
-    })
-  },
   computed: {
     ...mapState({
-      topics: state => state.topics
+      topics: state => state.topics,
+      topicsLoaded: state => state.topicsLoaded
     })
-  },
-  data () {
-    return {
-      loading: true
-    }
   }
 }
 </script>

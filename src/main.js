@@ -3,11 +3,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
 
-// const VueIziToast = () => import('vue-izitoast')
-import VueIziToast from 'vue-izitoast'
-
 import './registerServiceWorker'
-// import 'izitoast/dist/css/iziToast.css'
+import router from './router'
+import VueIziToast from 'vue-izitoast'
 const rtdbPlugin = ({ rtdbPlugin }) => import('vuefire')
 
 const options = {
@@ -19,5 +17,6 @@ Vue.use(VueIziToast, options)
 
 new Vue({
   store,
+  router,
   render: h => h(App)
 }).$mount('#app')
