@@ -1,13 +1,7 @@
 <template>
-  <li
-    v-if="topic"
-    :id="id"
-    class="topics-list-item"
-  >
+  <li v-if="topic" :id="id" class="topics-list-item">
     <div class="topics-list-item__content">
-      <h3 class="topics-list-item__title">
-        {{ topic.title }}
-      </h3>
+      <h3 class="topics-list-item__title">{{ topic.title }}</h3>
       <h3>
         <router-link
           :to="{
@@ -16,18 +10,38 @@
               id: id
             }
           }"
-        >
-          {{ topic.title }}
-        </router-link>
+        >{{ topic.title }}</router-link>
       </h3>
-      <p>
-        {{ topic.description }}
-      </p>
+      <p>{{ topic.description }}</p>
+      <ul class="share-list">
+        <li
+          v-for="network in networks"
+          :key="network.network"
+          class="share-list__item"
+        >
+          <ShareNetwork
+            :network="network.network"
+            :style="{backgroundColor: network.color}"
+            :url="sharing.url"
+            :title="sharing.title"
+            :description="sharing.description"
+            :quote="sharing.quote"
+            :hashtags="sharing.hashtags"
+            :twitterUser="sharing.twitterUser"
+            class="share-list__item-link"
+          >
+            <span class="share-list__item-icon">
+              <component :is="network.icon"></component>
+            </span>
+            <span class="share-list__item-text">
+              Share on {{ network.name }}
+            </span>
+          </ShareNetwork>
+        </li>
+      </ul>
     </div>
     <div class="topics-list-item__vote">
-      <div
-        class="topics-list-item__vote-number"
-      >
+      <div class="topics-list-item__vote-number">
         <h4>Votes:</h4>
         {{ topic.votes }}
       </div>
@@ -61,7 +75,10 @@ Vue.directive('tooltip', VTooltip)
 export default {
   components: {
     VButton,
-    LikeIcon: () => import('@/assets/icons/like.svg')
+    LikeIcon: () => import('@/assets/icons/like.svg'),
+    FbIcon: () => import('@/assets/icons/fb-i.svg'),
+    TwitterIcon: () => import('@/assets/icons/twitter-i.svg'),
+    LinkedInIcon: () => import('@/assets/icons/linkedin-i.svg')
   },
   props: {
     id: {
@@ -85,19 +102,52 @@ export default {
       return this.$store.getters.topicById(this.id)
     },
     voteDisabled () {
-      return !this.isLoggedIn || (
-        this.isLoggedIn && (this.user ? this.author === this.user.id : false))
+      return (
+        !this.isLoggedIn ||
+        (this.isLoggedIn && (this.user ? this.author === this.user.id : false))
+      )
     },
     tooltipText () {
       let message = ''
       if (!this.isLoggedIn) {
         message = 'You have to be logged in to vote'
-      } else if ((this.author === this.user.id)) {
-        message = 'Naughty naughty!<br> It\'s not fair to vote for your own topic.'
+      } else if (this.author === this.user.id) {
+        message =
+          "Naughty naughty!<br> It's not fair to vote for your own topic."
       } else if (this.isVoted) {
         message = 'Voted!'
       }
       return message
+    }
+  },
+  data () {
+    return {
+      sharing: {
+        url: `${window.location.href}`,
+        title: 'title',
+        description: 'description',
+        hashtags: '#mmpl20'
+      },
+      networks: [
+        {
+          network: 'facebook',
+          name: 'Facebook',
+          icon: 'FbIcon',
+          color: '#1877f2'
+        },
+        {
+          network: 'linkedin',
+          name: 'LinkedIn',
+          icon: 'LinkedInIcon',
+          color: '#007bb5'
+        },
+        {
+          network: 'twitter',
+          name: 'Twitter',
+          icon: 'TwitterIcon',
+          color: '#1da1f2'
+        }
+      ]
     }
   },
   methods: {
@@ -185,6 +235,44 @@ export default {
       cursor: not-allowed;
       background-color: $gray-lighter;
     }
+  }
+}
+
+.share-list {
+  display: flex;
+  padding: 0;
+  margin: $spacer--m 0;
+
+  &__item {
+    list-style-type: none;
+  }
+
+  &__item-link {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex: none;
+    padding: $spacer--xs $spacer--s;
+    margin: 0 $spacer--s $spacer--s 0;
+    border-radius: 3px;
+    color: $white;
+    background-color: $gray-darker;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  &__item-icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    transition: $transition-base;
+  }
+
+  &__item-text {
+    flex: 1 1 0%;
+    padding: 0 10px;
+    font-weight: 500;
   }
 }
 </style>

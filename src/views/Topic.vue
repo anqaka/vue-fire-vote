@@ -5,7 +5,10 @@
     </ul>
     <user-state class="col-xs-12" />
     <div class="col-xs-12">
-      <router-link to="/" class="button button--secondary">
+      <router-link
+        to="/"
+        class="button button--secondary"
+      >
         See all propositions
       </router-link>
     </div>

@@ -6,6 +6,7 @@ import store from './store'
 import './registerServiceWorker'
 import router from './router'
 import VueIziToast from 'vue-izitoast'
+import VueSocialSharing from 'vue-social-sharing'
 const rtdbPlugin = ({ rtdbPlugin }) => import('vuefire')
 
 const options = {
@@ -14,6 +15,7 @@ const options = {
 
 Vue.use(rtdbPlugin)
 Vue.use(VueIziToast, options)
+Vue.use(VueSocialSharing)
 
 new Vue({
   store,
