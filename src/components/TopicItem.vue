@@ -12,7 +12,7 @@
           }"
         >{{ topic.title }}</router-link>
       </h3>
-      <p>{{ topic.description }}</p>
+      <div v-html="compiledMarkdown"></div>
       <social-share :url="shareUrl"/>
     </div>
     <div class="topics-list-item__vote">
@@ -41,6 +41,7 @@
 </template>
 <script>
 import Vue from 'vue'
+import marked from 'marked'
 import { mapGetters, mapState } from 'vuex'
 import { VTooltip } from 'v-tooltip'
 import VButton from '@/components/Button.vue'
@@ -92,6 +93,9 @@ export default {
         message = 'Voted!'
       }
       return message
+    },
+    compiledMarkdown: function () {
+      return marked(this.topic.description, { sanitize: true })
     }
   },
   data () {
