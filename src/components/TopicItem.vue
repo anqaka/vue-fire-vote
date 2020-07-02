@@ -13,32 +13,7 @@
         >{{ topic.title }}</router-link>
       </h3>
       <p>{{ topic.description }}</p>
-      <ul class="share-list">
-        <li
-          v-for="network in networks"
-          :key="network.network"
-          class="share-list__item"
-        >
-          <ShareNetwork
-            :network="network.network"
-            :style="{backgroundColor: network.color}"
-            :url="sharing.url"
-            :title="sharing.title"
-            :description="sharing.description"
-            :quote="sharing.quote"
-            :hashtags="sharing.hashtags"
-            :twitterUser="sharing.twitterUser"
-            class="share-list__item-link"
-          >
-            <span class="share-list__item-icon">
-              <component :is="network.icon"></component>
-            </span>
-            <span class="share-list__item-text">
-              Share on {{ network.name }}
-            </span>
-          </ShareNetwork>
-        </li>
-      </ul>
+      <social-share :url="shareUrl"/>
     </div>
     <div class="topics-list-item__vote">
       <div class="topics-list-item__vote-number">
@@ -69,16 +44,15 @@ import Vue from 'vue'
 import { mapGetters, mapState } from 'vuex'
 import { VTooltip } from 'v-tooltip'
 import VButton from '@/components/Button.vue'
+import SocialShare from '@/components/SocialShare.vue'
 
 Vue.directive('tooltip', VTooltip)
 
 export default {
   components: {
     VButton,
-    LikeIcon: () => import('@/assets/icons/like.svg'),
-    FbIcon: () => import('@/assets/icons/fb-i.svg'),
-    TwitterIcon: () => import('@/assets/icons/twitter-i.svg'),
-    LinkedInIcon: () => import('@/assets/icons/linkedin-i.svg')
+    SocialShare,
+    LikeIcon: () => import('@/assets/icons/like.svg')
   },
   props: {
     id: {
@@ -122,32 +96,9 @@ export default {
   },
   data () {
     return {
-      sharing: {
-        url: `${window.location.href}`,
-        title: 'title',
-        description: 'description',
-        hashtags: '#mmpl20'
-      },
-      networks: [
-        {
-          network: 'facebook',
-          name: 'Facebook',
-          icon: 'FbIcon',
-          color: '#1877f2'
-        },
-        {
-          network: 'linkedin',
-          name: 'LinkedIn',
-          icon: 'LinkedInIcon',
-          color: '#007bb5'
-        },
-        {
-          network: 'twitter',
-          name: 'Twitter',
-          icon: 'TwitterIcon',
-          color: '#1da1f2'
-        }
-      ]
+      shareUrl: this.$route.path === '/'
+        ? `${window.location.href}/topic/${this.id}`
+        : `${window.location.href}`
     }
   },
   methods: {
@@ -235,44 +186,6 @@ export default {
       cursor: not-allowed;
       background-color: $gray-lighter;
     }
-  }
-}
-
-.share-list {
-  display: flex;
-  padding: 0;
-  margin: $spacer--m 0;
-
-  &__item {
-    list-style-type: none;
-  }
-
-  &__item-link {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    flex-direction: row;
-    flex: none;
-    padding: $spacer--xs $spacer--s;
-    margin: 0 $spacer--s $spacer--s 0;
-    border-radius: 3px;
-    color: $white;
-    background-color: $gray-darker;
-    overflow: hidden;
-    cursor: pointer;
-  }
-
-  &__item-icon {
-    display: block;
-    width: 24px;
-    height: 24px;
-    transition: $transition-base;
-  }
-
-  &__item-text {
-    flex: 1 1 0%;
-    padding: 0 10px;
-    font-weight: 500;
   }
 }
 </style>
