@@ -12,7 +12,10 @@
           }"
         >{{ topic.title }}</router-link>
       </h3>
-      <div v-html="compiledMarkdown"></div>
+      <div
+        v-if="topic.description"
+        v-html="compiledMarkdown(topic.description)"
+      ></div>
       <social-share :url="shareUrl"/>
     </div>
     <div class="topics-list-item__vote">
@@ -41,11 +44,11 @@
 </template>
 <script>
 import Vue from 'vue'
-import marked from 'marked'
 import { mapGetters, mapState } from 'vuex'
 import { VTooltip } from 'v-tooltip'
 import VButton from '@/components/Button.vue'
 import SocialShare from '@/components/SocialShare.vue'
+import markdown from '@/mixins/markdown.js'
 
 Vue.directive('tooltip', VTooltip)
 
@@ -61,6 +64,7 @@ export default {
       required: true
     }
   },
+  mixins: [markdown],
   computed: {
     ...mapState({
       user: state => state.user,
@@ -93,9 +97,6 @@ export default {
         message = 'Voted!'
       }
       return message
-    },
-    compiledMarkdown: function () {
-      return marked(this.topic.description, { sanitize: true })
     }
   },
   data () {

@@ -32,6 +32,7 @@
         </label>
         <textarea
           id="description"
+          @input="debounceInput"
           v-model="$v.description.$model"
           class="input__field input__field--textarea"
           type="text"
@@ -68,12 +69,21 @@
     >
       Please fill the form correctly.
     </p>
+    <div
+      v-if="description"
+      class="form-section__preview"
+    >
+      <h3>Your description preview:</h3>
+      <div v-html="compiledMarkdown(description)"></div>
+    </div>
   </section>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
+import debounce from 'lodash.debounce'
+import markdown from '@/mixins/markdown.js'
 import Loader from '@/components/Loader.vue'
 import VButton from '@/components/Button.vue'
 
@@ -95,7 +105,10 @@ export default {
       submitStatus: null
     }
   },
-  mixins: [validationMixin],
+  mixins: [
+    validationMixin,
+    markdown
+  ],
   validations: {
     title: {
       required
@@ -105,6 +118,11 @@ export default {
     }
   },
   methods: {
+    debounceInput () {
+      debounce(function (e) {
+        this.input = e.target.value
+      }, 300)
+    },
     addTopic () {
       this.$v.$touch()
       if (this.$v.$invalid) {
