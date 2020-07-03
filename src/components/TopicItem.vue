@@ -16,6 +16,31 @@
         v-if="topic.description"
         v-html="compiledMarkdown(topic.description)"
       ></div>
+      <div v-if="isAdmin" class="topic-list-item__details">
+        <h4>
+          Author info:
+        </h4>
+        <ul>
+          <li>
+            {{ topic.authorId }}
+          </li>
+          <li>
+            {{ topic.authorName }}
+          </li>
+          <li>
+            {{ topic.authorEmail }}
+          </li>
+        </ul>
+        <h4>Status</h4>
+        <span>
+          {{ topic.approved ? 'approved' : 'not approved' }}
+        </span>
+        <v-button
+          v-if="isAdmin && !topic.approved"
+          @btn-event="approveTopic">
+          Approve
+        </v-button>
+      </div>
       <social-share :url="shareUrl"/>
     </div>
     <div class="topics-list-item__vote">
@@ -72,7 +97,8 @@ export default {
       topic: state => state.topics[this.index]
     }),
     ...mapGetters({
-      isLoggedIn: 'isLoggedIn'
+      isLoggedIn: 'isLoggedIn',
+      isAdmin: 'isAdmin'
     }),
     isVoted () {
       return this.userVotes.some(item => item[this.id])
@@ -118,6 +144,10 @@ export default {
         const itemKey = userVote['.key']
         this.$store.dispatch('downvote', { id, itemKey, votes })
       }
+    },
+    approveTopic () {
+      const topicId = this.id
+      this.$store.dispatch('approveTopic', topicId)
     }
   }
 }
@@ -129,6 +159,7 @@ export default {
   display: flex;
   flex-flow: column nowrap;
   margin-bottom: $spacer--xl;
+  border-bottom: $border-base;
 
   @include mq($screen-sm-min) {
     flex-direction: row;
@@ -147,6 +178,10 @@ export default {
 
   &__title {
     margin-bottom: $spacer--s;
+  }
+
+  &__details {
+    margin: $spacer--xl 0;
   }
 
   &__vote {

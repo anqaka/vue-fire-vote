@@ -5,6 +5,7 @@ export default {
 
   RESET_USER_DATA: (state) => {
     state.user = null
+    state.admin = false
   },
 
   RESET_VOTES_DATA: (state) => {
@@ -17,6 +18,10 @@ export default {
       email: user.email,
       displayName: user.displayName
     }
+  },
+
+  SET_ADMIN: (state) => {
+    state.admin = true
   },
 
   LOAD_TOPICS: (state, payload) => {

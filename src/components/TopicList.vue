@@ -1,7 +1,7 @@
 <template>
   <section>
     <h2>
-      List of proposed topics
+      {{ title }}
     </h2>
       <ul
         v-if="topics.length"
@@ -31,13 +31,22 @@ import { mapState } from 'vuex'
 import Loader from '@/components/Loader.vue'
 
 export default {
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    topics: {
+      type: Array,
+      required: true
+    }
+  },
   components: {
     Loader,
     TopicItem: () => import('@/components/TopicItem.vue')
   },
   computed: {
     ...mapState({
-      topics: state => state.topics,
       topicsLoaded: state => state.topicsLoaded
     })
   }

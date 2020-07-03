@@ -8,6 +8,13 @@
         <router-link to="/about" class="link">
           About
         </router-link>
+        <router-link
+          v-if="isAdmin"
+          to="/admin-dashboard"
+          class="link"
+        >
+          Admin Dashboard
+        </router-link>
       </nav>
     </header>
     <main class="container">
@@ -26,7 +33,8 @@ export default {
   mixins: [notification],
   computed: {
     ...mapGetters({
-      isLoggedIn: 'isLoggedIn'
+      isLoggedIn: 'isLoggedIn',
+      isAdmin: 'isAdmin'
     })
   }
 }

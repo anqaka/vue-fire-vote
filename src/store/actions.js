@@ -33,7 +33,10 @@ export default {
       title: topic.title,
       description: topic.description,
       votes: 0,
-      user: state.user.id
+      authorId: state.user.id,
+      authorEmail: state.user.email,
+      authorName: state.user.displayName,
+      approved: false
     }).then(() => {
       commit('notification/push', {
         message: 'Your proposition was added',
@@ -57,6 +60,7 @@ export default {
           return
         }
         commit('SET_AUTH_USER', { user })
+        dispatch('checkAdmin')
         dispatch('bindUser')
         commit('notification/push', {
           message: 'You have logged in successfully',
@@ -114,5 +118,32 @@ export default {
         type: 'error'
       }, { root: true })
     })
-  })
+  }),
+  approveTopic: firebaseAction(({ commit }, data) => {
+    return topicRef.child(data).update({
+      approved: true
+    }).catch((err) => {
+      commit('notification/push', {
+        message: err.message,
+        title: 'Error',
+        type: 'error'
+      }, { root: true })
+    })
+  }),
+  async checkAdmin ({ commit, state }) {
+    try {
+      await userRef
+        .child(state.user.id)
+        .once('value', snapshot => {
+          if (snapshot.exists()) {
+            const snap = snapshot.val()
+            if (snap.admin) {
+              commit('SET_ADMIN')
+            }
+          }
+        })
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }

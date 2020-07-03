@@ -13,7 +13,11 @@
       </p>
     </div>
     <user-state class="col-xs-12" />
-    <topic-list class="col-xs-12" />
+    <topic-list
+      :topics="topics"
+      :title="topicListTitle"
+      class="col-xs-12"
+     />
     <add-topic
       v-if="isLoggedIn"
       class="col-xs-12"
@@ -35,8 +39,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isLoggedIn: 'isLoggedIn'
+      isLoggedIn: 'isLoggedIn',
+      topics: 'getApprovedTopics'
     })
+  },
+  data () {
+    return {
+      topicListTitle: 'List of proposed Topics'
+    }
   }
 }
 </script>
