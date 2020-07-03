@@ -3,7 +3,7 @@ import marked from 'marked'
 export default {
   methods: {
     compiledMarkdown: function (text) {
-      return marked(text, { sanitize: true })
+      return marked(text, { sanitizer: true, breaks: true })
     }
   }
 }
