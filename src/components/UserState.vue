@@ -21,8 +21,34 @@
         </div>
       </transition>
       <transition name="fade">
+        <div
+          v-if="user && !user.emailVerified"
+          class="col-xs-12"
+        >
+          <p>
+            Hi
+            <span class="login-section__user">
+              {{ user.displayName || user.email }}
+            </span>!
+            <br>
+            Your email address is not verified.
+            <br>
+            You should receive an email verification request, check your email box.
+          </p>
+          <p>
+            If you didn't receive an email:
+            <v-button
+              :class="'button--link'"
+              @btn-event="resendEmailVerification"
+            >
+              Resend email verification request
+            </v-button>
+          </p>
+        </div>
+      </transition>
+      <transition name="fade">
         <v-button
-          v-if="!isLoggedIn && !showLogin"
+          v-if="!user && !showLogin"
           @btn-event="showLogin = true"
         >
           Log in or create an account
@@ -30,7 +56,7 @@
       </transition>
       <transition name="fade">
         <auth-user
-          v-if="showLogin && !isLoggedIn"
+          v-if="!user && showLogin"
           @hide-auth="showLogin = false"
         />
       </transition>
@@ -87,6 +113,9 @@ export default {
             type: 'error'
           }, { root: true })
         })
+    },
+    resendEmailVerification () {
+      this.$store.dispatch('sendEmailVerification')
     }
   }
 }

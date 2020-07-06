@@ -51,7 +51,7 @@ export default {
       }, { root: true })
     })
   }),
-  async onAuthStateChanged ({ commit, dispatch }) {
+  async onAuthStateChanged ({ state, commit, dispatch }) {
     try {
       await auth.onAuthStateChanged((user) => {
         if (!user) {
@@ -59,14 +59,24 @@ export default {
           commit('RESET_VOTES_DATA')
           return
         }
-        commit('SET_AUTH_USER', { user })
-        dispatch('checkAdmin')
-        dispatch('bindUser')
-        commit('notification/push', {
-          message: 'You have logged in successfully',
-          title: 'Success',
-          type: 'success'
-        }, { root: true })
+        if (user.emailVerified) {
+          commit('SET_AUTH_USER', { user })
+          dispatch('checkAdmin')
+          dispatch('bindUser')
+          commit('notification/push', {
+            message: 'You have logged in successfully',
+            title: 'Success',
+            type: 'success'
+          }, { root: true })
+        } else {
+          commit('SET_AUTH_USER', { user })
+          // check if initMail was sent
+          dispatch('checkinitEmailSent').then(() => {
+            if (!state.user.initEmailSent) {
+              dispatch('sendEmailVerification')
+            }
+          })
+        }
       })
     } catch (err) {
       commit('notification/push', {
@@ -145,5 +155,51 @@ export default {
     } catch (err) {
       console.log(err)
     }
-  }
+  },
+  async checkinitEmailSent ({ commit, state }) {
+    try {
+      await userRef
+        .child(state.user.id)
+        .once('value', snapshot => {
+          if (snapshot.exists()) {
+            const snap = snapshot.val()
+            if (snap.initEmailSent) {
+              commit('INIT_EMAIL_SENT')
+            }
+          }
+        })
+    } catch (err) {
+      console.log(err)
+    }
+  },
+  sendEmailVerification ({ state, dispatch, commit }) {
+    const user = auth.currentUser
+    if (!state.user.initEmailSent) {
+      dispatch('setInitEmailSent')
+    }
+    user.sendEmailVerification().then(() => {
+      // set in db that init email was send if needed
+      if (!state.user.initEmailSent) {
+        dispatch('setInitEmailSent')
+      }
+      commit('notification/push', {
+        message: `An Email verification request was sent to ${user.email}`,
+        title: '',
+        type: 'info'
+      }, { root: true })
+    }).catch((err) => {
+      commit('notification/push', {
+        message: err.message,
+        title: 'Error',
+        type: 'error'
+      }, { root: true })
+    })
+  },
+  setInitEmailSent: firebaseAction(({ state, commit }) => {
+    return userRef.child(state.user.id).set({
+      initEmailSent: true
+    }).then(() => {
+      commit('INIT_EMAIL_SENT')
+    })
+  })
 }

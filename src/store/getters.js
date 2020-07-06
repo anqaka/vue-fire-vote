@@ -8,7 +8,7 @@ export default {
   },
   isLoggedIn: (state) => {
     try {
-      return state.user.id !== null
+      return state.user.id !== null && state.user.emailVerified
     } catch {
       return false
     }

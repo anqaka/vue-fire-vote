@@ -16,12 +16,17 @@ export default {
     state.user = {
       id: user.uid,
       email: user.email,
-      displayName: user.displayName
+      displayName: user.displayName,
+      emailVerified: user.emailVerified
     }
   },
 
   SET_ADMIN: (state) => {
     state.admin = true
+  },
+
+  INIT_EMAIL_SENT: (state) => {
+    state.user.initEmailSent = true
   },
 
   LOAD_TOPICS: (state, payload) => {
