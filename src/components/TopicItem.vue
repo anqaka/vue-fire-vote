@@ -92,11 +92,10 @@ export default {
   mixins: [markdown],
   computed: {
     ...mapState({
-      user: state => state.user,
-      userVotes: state => state.userVotes,
-      topic: state => state.topics[this.index]
+      userVotes: state => state.userVotes
     }),
     ...mapGetters({
+      user: 'user',
       isLoggedIn: 'isLoggedIn',
       isAdmin: 'isAdmin'
     }),
@@ -109,14 +108,14 @@ export default {
     voteDisabled () {
       return (
         !this.isLoggedIn ||
-        (this.isLoggedIn && (this.user ? this.author === this.user.id : false))
+        (this.isLoggedIn && (this.user ? this.topic.authorId === this.user.id : false))
       )
     },
     tooltipText () {
       let message = ''
       if (!this.isLoggedIn) {
         message = 'You have to be logged in to vote'
-      } else if (this.author === this.user.id) {
+      } else if (this.topic.authorId === this.user.id) {
         message =
           "Naughty naughty!<br> It's not fair to vote for your own topic."
       } else if (this.isVoted) {
