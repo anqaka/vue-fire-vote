@@ -55,8 +55,11 @@
     </form>
     <div v-if="submitStatus === 'OK'">
       <p>
-        Thanks for your submission!
+        Thanks for your submission! Your topic will be verified.
+        <br>
+        it will show on the list as soon as it is approved.
       </p>
+      <br>
       <v-button
         @btn-event="submitStatus = null"
       >

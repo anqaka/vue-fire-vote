@@ -10,7 +10,8 @@ import VueSocialSharing from 'vue-social-sharing'
 const rtdbPlugin = ({ rtdbPlugin }) => import('vuefire')
 
 const options = {
-  position: 'topRight'
+  position: 'topRight',
+  timeout: 12000
 }
 
 Vue.use(rtdbPlugin)
