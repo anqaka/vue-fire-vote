@@ -1,5 +1,6 @@
 import { firebaseAction } from 'vuexfire'
 import { auth, topicRef, userRef } from '../db'
+import { checkSocialLogin } from '../helpers'
 
 export default {
   bindTopics: firebaseAction(({ bindFirebaseRef, commit }) => {
@@ -39,7 +40,7 @@ export default {
       approved: false
     }).then(() => {
       commit('notification/push', {
-        message: 'Your proposition was added',
+        message: 'Your proposition was added to verification',
         title: 'Success',
         type: 'success'
       }, { root: true })
@@ -59,7 +60,8 @@ export default {
           commit('RESET_VOTES_DATA')
           return
         }
-        if (user.emailVerified) {
+        const provider = user.providerData[0].providerId
+        if (user.emailVerified || checkSocialLogin(provider)) {
           commit('SET_AUTH_USER', { user })
           dispatch('checkAdmin')
           dispatch('bindUser')

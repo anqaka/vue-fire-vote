@@ -28,7 +28,7 @@
       </div>
       <div :class="['input', { 'input--error': $v.description.$error }]">
         <label for="description" class="form__label">
-          Topic description
+          Topic description (markdown syntax available)
         </label>
         <textarea
           id="description"
