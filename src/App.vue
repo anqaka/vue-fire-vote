@@ -29,6 +29,7 @@ import notification from '@/mixins/notification.js'
 export default {
   created () {
     this.$store.dispatch('bindTopics')
+    this.$store.dispatch('onAuthStateChanged')
   },
   mixins: [notification],
   computed: {

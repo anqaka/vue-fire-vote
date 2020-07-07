@@ -44,6 +44,12 @@
               Resend email verification request
             </v-button>
           </p>
+          <v-button
+            :class="'button--link'"
+            @btn-event="logout"
+          >
+            Logout
+          </v-button>
         </div>
       </transition>
       <transition name="fade">
@@ -60,23 +66,17 @@
           @hide-auth="showLogin = false"
         />
       </transition>
-    <loader
-      v-if="loading"
-      class="loader--overlay"
-    />
   </section>
 </template>
 <script>
 import { auth } from './../db'
 import { mapGetters } from 'vuex'
 import VButton from '@/components/Button.vue'
-import Loader from '@/components/Loader.vue'
 import AuthUser from '@/components/AuthUser.vue'
 
 export default {
   components: {
     AuthUser,
-    Loader,
     VButton
   },
   computed: {
@@ -87,14 +87,8 @@ export default {
   },
   data () {
     return {
-      loading: true,
       showLogin: false
     }
-  },
-  mounted () {
-    this.$store.dispatch('onAuthStateChanged').then(() => {
-      this.loading = false
-    })
   },
   methods: {
     logout () {
