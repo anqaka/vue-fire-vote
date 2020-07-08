@@ -8,7 +8,7 @@
       <ShareNetwork
         :network="network.network"
         :style="{backgroundColor: network.color}"
-        :url="sharing.url"
+        :url="url"
         :title="sharing.title"
         :description="sharing.description"
         :quote="sharing.quote"
@@ -43,7 +43,6 @@ export default {
   data () {
     return {
       sharing: {
-        url: `${this.$baseUrl}`,
         title: 'title',
         description: 'description',
         hashtags: '#mmpl20'
