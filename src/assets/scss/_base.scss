@@ -8,6 +8,8 @@ html,
 body {
   min-width: 320px;
   font-family: $font-family-base;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-weight: $font-weight-base;
   font-size: $font-size-base;
   color: $font-color-base;

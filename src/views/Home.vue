@@ -1,21 +1,23 @@
 <template>
   <div class="row center-xs">
     <h1 class="col-xs-12">
-      Magento 2020 subjects voter
+      {{ $t('home.home-title') }}
     </h1>
+    <h2 class="col-xs-12">
+      {{ $t('home.home-subtitle') }}
+    </h2>
     <div class="col-xs-12">
-      <p>Some text that explain what is the page for</p>
       <p>
-        This page allows as to collect topic that conference's participants are interested in. <br> It helps speakers to choose their subjects and us to choose those which fit your need.
+        {{ $t('home.home-top-description')}}
       </p>
       <p v-if="!isLoggedIn">
-        You have to be logged in to vote for a topic or add your own proposition.
+        {{ $t('home.login-info') }}
       </p>
     </div>
     <user-state class="col-xs-12" />
     <topic-list
       :topics="topics"
-      :title="topicListTitle"
+      :title="$t('home.list-items-title')"
       class="col-xs-12"
      />
     <add-topic
@@ -42,11 +44,6 @@ export default {
       isLoggedIn: 'isLoggedIn',
       topics: 'getApprovedTopics'
     })
-  },
-  data () {
-    return {
-      topicListTitle: 'List of proposed Topics'
-    }
   }
 }
 </script>

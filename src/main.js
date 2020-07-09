@@ -7,6 +7,7 @@ import './registerServiceWorker'
 import router from './router'
 import VueIziToast from 'vue-izitoast'
 import VueSocialSharing from 'vue-social-sharing'
+import i18n from './i18n'
 const rtdbPlugin = ({ rtdbPlugin }) => import('vuefire')
 
 const options = {
@@ -21,5 +22,6 @@ Vue.use(VueSocialSharing)
 new Vue({
   store,
   router,
+  i18n,
   render: h => h(App)
 }).$mount('#app')

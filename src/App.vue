@@ -1,14 +1,21 @@
 <template>
   <div id="app">
-    <header>
-      <nav id="nav" class="nav">
-        <router-link to="/" class="link">Home</router-link>
+    <header class="row between-xs">
+      <nav
+        id="nav"
+        class="nav col-xs"
+      >
+        <router-link
+          to="/"
+          class="link"
+        >Home</router-link>
         <router-link
           v-if="isAdmin"
           to="/admin-dashboard"
           class="link"
         >Admin Dashboard</router-link>
       </nav>
+      <lang-switcher class="col-xs" />
     </header>
     <main class="container">
       <router-view/>
@@ -19,8 +26,12 @@
 import { mapGetters } from 'vuex'
 import notification from '@/mixins/notification.js'
 import fb from '@/mixins/facebook.js'
+import LangSwitcher from '@/components/LangSwitcher.vue'
 
 export default {
+  components: {
+    LangSwitcher
+  },
   created () {
     this.$store.dispatch('bindTopics')
     this.$store.dispatch('onAuthStateChanged')
@@ -36,16 +47,9 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: $gray-darker;
-}
-
 .nav {
-  padding: 30px;
+  padding: $spacer--m;
+  text-align: left;
 
   a {
     padding: $spacer--xs 0;
