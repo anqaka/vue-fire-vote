@@ -6,7 +6,7 @@
           class="col-xs-12"
         >
           Hi
-          <span class="login-section__user">
+          <span class="bold">
             {{ user.displayName || user.email }}
           </span>!
           <br>
@@ -22,12 +22,12 @@
       </transition>
       <transition name="fade">
         <div
-          v-if="user && !user.emailVerified"
+          v-if="isEmailVerification"
           class="col-xs-12"
         >
           <p>
             Hi
-            <span class="login-section__user">
+            <span class="bold">
               {{ user.displayName || user.email }}
             </span>!
             <br>
@@ -71,6 +71,7 @@
 <script>
 import { auth } from './../db'
 import { mapGetters } from 'vuex'
+import { checkSocialLogin } from '../helpers'
 import VButton from '@/components/Button.vue'
 import AuthUser from '@/components/AuthUser.vue'
 
@@ -83,7 +84,10 @@ export default {
     ...mapGetters([
       'isLoggedIn',
       'user'
-    ])
+    ]),
+    isEmailVerification () {
+      return this.user && !this.user.emailVerified && !checkSocialLogin(this.user.provider)
+    }
   },
   data () {
     return {
@@ -117,9 +121,5 @@ export default {
 <style lang="scss" scoped>
 .login-section {
   position: relative;
-
-  &__user {
-    font-weight: bold;
-  }
 }
 </style>

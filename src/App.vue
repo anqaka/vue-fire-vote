@@ -25,13 +25,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import notification from '@/mixins/notification.js'
+import fb from '@/mixins/facebook.js'
 
 export default {
   created () {
     this.$store.dispatch('bindTopics')
     this.$store.dispatch('onAuthStateChanged')
   },
-  mixins: [notification],
+  mixins: [notification, fb],
   computed: {
     ...mapGetters({
       isLoggedIn: 'isLoggedIn',

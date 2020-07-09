@@ -17,7 +17,8 @@ export default {
       id: user.uid,
       email: user.email,
       displayName: user.displayName,
-      emailVerified: user.emailVerified
+      emailVerified: user.emailVerified,
+      provider: user.providerData[0].providerId
     }
   },
 
@@ -31,5 +32,9 @@ export default {
 
   LOAD_TOPICS: (state, payload) => {
     state.topicsLoaded = payload
+  },
+
+  SET_LINK_ACCOUNT: (state, payload) => {
+    state.linkAccount = payload
   }
 }

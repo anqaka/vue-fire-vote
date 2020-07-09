@@ -203,5 +203,8 @@ export default {
     }).then(() => {
       commit('INIT_EMAIL_SENT')
     })
-  })
+  }),
+  setLinkingAccount ({ commit }, payload) {
+    commit('SET_LINK_ACCOUNT', payload)
+  }
 }

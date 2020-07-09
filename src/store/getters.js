@@ -1,3 +1,5 @@
+import { checkSocialLogin } from '../helpers'
+
 export default {
   user: (state) => {
     try {
@@ -8,7 +10,7 @@ export default {
   },
   isLoggedIn: (state) => {
     try {
-      return state.user.id !== null && state.user.emailVerified
+      return state.user.id !== null && (state.user.emailVerified || checkSocialLogin(state.user.provider))
     } catch {
       return false
     }
@@ -44,6 +46,42 @@ export default {
         return state.topics.filter(topic => {
           return !topic.approved
         })
+      }
+    } catch {
+      return false
+    }
+  },
+  linkProvider: (state) => {
+    try {
+      if (state.linkAccount) {
+        return state.linkAccount.provider
+      }
+    } catch {
+      return false
+    }
+  },
+  linkCreds: (state) => {
+    try {
+      if (state.linkAccount) {
+        return state.linkAccount.creds
+      }
+    } catch {
+      return false
+    }
+  },
+  linkEmail: (state) => {
+    try {
+      if (state.linkAccount) {
+        return state.linkAccount.email
+      }
+    } catch {
+      return false
+    }
+  },
+  linkPass: (state) => {
+    try {
+      if (state.linkAccount) {
+        return state.linkAccount.password
       }
     } catch {
       return false

@@ -16,7 +16,8 @@ export default new Vuex.Store({
     user: null,
     userVotes: [],
     topicsLoaded: 0,
-    admin: false
+    admin: false,
+    linkAccount: null
   },
   mutations: mutations,
   actions,
