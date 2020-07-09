@@ -161,9 +161,7 @@ export default {
   },
   data () {
     return {
-      shareUrl: this.$route.path === '/'
-        ? `${window.location.href}/topic/${this.id}`
-        : `${window.location.href}`
+      shareUrl: `${process.env.VUE_APP_URL}topic/${this.id}`
     }
   },
   methods: {
