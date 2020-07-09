@@ -28,7 +28,7 @@
       </div>
       <div :class="['input', { 'input--error': $v.description.$error }]">
         <label for="description" class="form__label">
-          Topic description (markdown syntax available)
+          Topic description (markdown syntax available, max. 700 characteres)
         </label>
         <textarea
           id="description"
@@ -43,6 +43,12 @@
           class="error"
         >
           Field is required
+        </div>
+        <div
+          v-if="!$v.description.maxLength"
+          class="error"
+        >
+          Max length of text description - 700 characteres
         </div>
       </div>
       <div class="form-section__action">
@@ -83,7 +89,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { required } from 'vuelidate/lib/validators'
+import { required, maxLength } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 import debounce from 'lodash.debounce'
 import markdown from '@/mixins/markdown.js'
@@ -117,7 +123,8 @@ export default {
       required
     },
     description: {
-      required
+      required,
+      maxLength: maxLength(700)
     }
   },
   methods: {

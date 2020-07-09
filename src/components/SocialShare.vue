@@ -9,11 +9,10 @@
         :network="network.network"
         :style="{backgroundColor: network.color}"
         :url="url"
-        :title="sharing.title"
-        :description="sharing.description"
-        :quote="sharing.quote"
+        :title="title"
+        :description="description"
+        :twitterUser="sharing.twitter"
         :hashtags="sharing.hashtags"
-        :twitterUser="sharing.twitterUser"
         class="share-list__item-link"
       >
         <span class="share-list__item-icon">
@@ -38,14 +37,21 @@ export default {
     url: {
       type: String,
       require: true
+    },
+    description: {
+      type: String,
+      require: true
+    },
+    title: {
+      type: String,
+      require: true
     }
   },
   data () {
     return {
       sharing: {
-        title: 'title',
-        description: 'description',
-        hashtags: '#mmpl20'
+        hashtags: '#mmpl2020',
+        twitter: '@MeetMagentoPL'
       },
       networks: [
         {

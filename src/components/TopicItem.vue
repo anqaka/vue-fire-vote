@@ -29,7 +29,11 @@
         v-if="topic.description"
         v-html="compiledMarkdown(topic.description)"
       ></div>
-      <social-share :url="shareUrl"/>
+      <social-share
+        :url="shareUrl"
+        :title="topic.title"
+        :description="topic.description"
+      />
       <div v-if="isAdmin" class="topic-item__details">
         <h4>
           Details:
