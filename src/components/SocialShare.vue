@@ -75,10 +75,16 @@ export default {
 <style lang="scss">
 .share-list {
   display: flex;
+  flex-direction: column;
   padding: 0;
   margin: $spacer--m 0;
+  @include mq($screen-xs-min) {
+    flex-direction: row;
+  }
 
   &__item {
+    display: block;
+    width: 178px;
     list-style-type: none;
   }
 
@@ -106,7 +112,8 @@ export default {
 
   &__item-text {
     flex: 1 1 auto;
-    padding: 0 10px;
+    padding-left: 10px;
+    font-size: $font-size-extra-small;
     font-weight: 500;
   }
 }

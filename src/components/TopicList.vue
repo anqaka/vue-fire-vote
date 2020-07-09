@@ -7,11 +7,15 @@
         v-if="topics.length"
         class="topics-list"
       >
-        <topic-item
+        <li
           v-for="(item) in topics"
           :key="item['.key']"
-          :id="item['.key']"
-        />
+        >
+          <topic-item
+            :id="item['.key']"
+            :listItem="true"
+          />
+        </li>
       </ul>
       <transition name="fade">
         <p v-if="topicsLoaded === 1 && topics.length === 0">

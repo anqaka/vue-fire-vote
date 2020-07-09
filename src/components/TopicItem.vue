@@ -1,8 +1,21 @@
 <template>
-  <li v-if="topic" :id="id" class="topics-list-item">
-    <div class="topics-list-item__content">
-      <h3 class="topics-list-item__title">{{ topic.title }}</h3>
-      <h3>
+  <div
+    v-if="topic"
+    :id="id"
+    class="topic-item"
+  >
+    <div class="topic-item__content">
+      <h1
+        v-if="!listItem"
+        class="topic-item__title"
+      >
+        {{ topic.title }}
+      </h1>
+      <h3
+        v-else
+        class="topic-item__title">{{ topic.title }}
+      </h3>
+      <div>
         <router-link
           :to="{
             name: 'topic',
@@ -11,49 +24,67 @@
             }
           }"
         >{{ topic.title }}</router-link>
-      </h3>
+      </div>
       <div
         v-if="topic.description"
         v-html="compiledMarkdown(topic.description)"
       ></div>
-      <div v-if="isAdmin" class="topic-list-item__details">
+      <social-share :url="shareUrl"/>
+      <div v-if="isAdmin" class="topic-item__details">
         <h4>
-          Author info:
+          Details:
         </h4>
-        <ul>
+        <ul class="topic-item__list">
           <li>
+            <span class="bold">
+              Author ID:
+            </span>
             {{ topic.authorId }}
           </li>
           <li>
+            <span class="bold">
+              Author Name:
+            </span>
             {{ topic.authorName }}
           </li>
           <li>
+            <span class="bold">
+              Author email:
+            </span>
             {{ topic.authorEmail }}
           </li>
+          <li>
+            <span class="bold">
+              Created:
+            </span>
+            {{ topic.createDate }}
+          </li>
+          <li>
+            <span class="bold">
+              Status:
+            </span>
+            {{ topic.approved ? 'approved' : 'not approved' }}
+            <v-button
+              v-if="isAdmin && !topic.approved"
+              class="topic-item__approve-btn"
+              @btn-event="approveTopic">
+              Approve
+            </v-button>
+          </li>
         </ul>
-        <h4>Status</h4>
-        <span>
-          {{ topic.approved ? 'approved' : 'not approved' }}
-        </span>
-        <v-button
-          v-if="isAdmin && !topic.approved"
-          @btn-event="approveTopic">
-          Approve
-        </v-button>
       </div>
-      <social-share :url="shareUrl"/>
     </div>
-    <div class="topics-list-item__vote">
-      <div class="topics-list-item__vote-number">
+    <div class="topic-item__vote">
+      <div class="topic-item__vote-number">
         <h4>Votes:</h4>
         {{ topic.votes }}
       </div>
       <v-button
         :class="[
-          'topics-list-item__upvote',
+          'topic-item__upvote',
           {
-            'topics-list-item__upvote--voted': isVoted,
-            'topics-list-item__upvote--disabled': voteDisabled
+            'topic-item__upvote--voted': isVoted,
+            'topic-item__upvote--disabled': voteDisabled
           }
         ]"
         @btn-event="isVoted ? downvote(id, topic.votes) : upvote(id, topic.votes)"
@@ -65,7 +96,7 @@
         </span>
       </v-button>
     </div>
-  </li>
+  </div>
 </template>
 <script>
 import Vue from 'vue'
@@ -87,6 +118,10 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    listItem: {
+      type: Boolean,
+      default: false
     }
   },
   mixins: [markdown],
@@ -154,7 +189,7 @@ export default {
 <style lang="scss">
 @import './src/assets/scss/tooltip';
 
-.topics-list-item {
+.topic-item {
   display: flex;
   flex-flow: column nowrap;
   margin-bottom: $spacer--xl;
@@ -169,6 +204,7 @@ export default {
     flex-grow: 1;
     text-align: left;
     padding-top: $spacer--s;
+    word-break: break-word;
 
     @include mq($screen-sm-min) {
       max-width: 70%;
@@ -181,12 +217,26 @@ export default {
 
   &__details {
     margin: $spacer--xl 0;
+    padding-top: $spacer--m;
+    border-top: $border-base;
+  }
+
+  &__list {
+    display: block;
+    margin: $spacer--s 0;
+    padding: 0;
+    list-style: none;
+    line-height: 2;
+  }
+
+  &__approve-btn {
+    margin-left: $spacer--m;
   }
 
   &__vote {
     display: flex;
     flex-flow: row nowrap;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-end;
   }
 

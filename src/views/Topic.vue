@@ -1,8 +1,8 @@
 <template>
   <div class="row center-xs">
-    <ul class="col-xs-12">
+    <div class="col-xs-12">
       <topic-item :id="id" />
-    </ul>
+    </div>
     <user-state class="col-xs-12" />
     <div class="col-xs-12">
       <router-link
