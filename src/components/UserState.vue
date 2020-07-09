@@ -10,7 +10,7 @@
             {{ user.displayName || user.email }}
           </span>!
           <br>
-          Now you can vote on proposed topic or add your own proposition.
+          You can vote on proposed topics or add your own proposition.
           <br>
           <v-button
             :class="'button--link'"

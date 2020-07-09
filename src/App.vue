@@ -2,19 +2,12 @@
   <div id="app">
     <header>
       <nav id="nav" class="nav">
-        <router-link to="/" class="link">
-          Home
-        </router-link> |
-        <router-link to="/about" class="link">
-          About
-        </router-link>
+        <router-link to="/" class="link">Home</router-link>
         <router-link
           v-if="isAdmin"
           to="/admin-dashboard"
           class="link"
-        >
-          Admin Dashboard
-        </router-link>
+        >Admin Dashboard</router-link>
       </nav>
     </header>
     <main class="container">
@@ -55,7 +48,8 @@ export default {
   padding: 30px;
 
   a {
-    padding: $spacer--xs $spacer--s;
+    padding: $spacer--xs 0;
+    margin: 0 $spacer--m;
   }
 }
 </style>
