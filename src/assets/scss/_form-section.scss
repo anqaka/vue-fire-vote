@@ -11,4 +11,11 @@
       margin: 0 auto;
     }
   }
+  &__preview {
+    margin: $spacer--xl 0;
+    padding: $spacer--m;
+    border-top: $border-base;
+    text-align: left;
+    word-break: break-word;
+  }
 }

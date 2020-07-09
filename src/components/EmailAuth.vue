@@ -45,7 +45,10 @@
           Field is required
         </div>
       </div>
-      <div :class="['input', { 'input--error': $v.formData.email.$error }]">
+      <div
+        v-if="!isLinkingProviderPassword"
+        :class="['input', { 'input--error': $v.formData.email.$error }]"
+      >
         <label for="email">
           Email
         </label>
@@ -55,7 +58,7 @@
           class="input__field"
           type="email"
           placeholder="email"
-          autocomplete="email"
+          :autocomplete="isLinkingProviderPassword ? 'off' : 'email'"
         >
         <div
           v-if="!$v.formData.email.required"
@@ -80,7 +83,7 @@
           class="input__field"
           type="password"
           placeholder="password"
-          autocomplete="current-password"
+          :autocomplete="login ? 'current-password' : 'new-password'"
         >
         <div
           v-if="!$v.formData.password.required"
@@ -98,7 +101,7 @@
         Log In
       </v-button>
       <v-button
-        v-else
+        v-else-if="!isLinkingProviderPassword"
         :type="'submit'"
         :disabled="$v.$invalid"
         @btn-event="createUser"
@@ -106,42 +109,57 @@
         Create User
       </v-button>
     </form>
-    <p v-if="login">
-      You don't have account?
+    <template v-if="!isLinkingProviderPassword">
+      <p v-if="login">
+        You don't have account?
+        <v-button
+          :class="'button--link'"
+          @btn-event="login = !login"
+        >
+          Create new one here
+        </v-button>
+      </p>
+      <p v-else>
+        You alread have an account?
+        <v-button
+          :class="'button--link'"
+          @btn-event="login = !login"
+        >
+          Log in
+        </v-button>
+      </p>
       <v-button
         :class="'button--link'"
-        @btn-event="login = !login"
+        @btn-event="backToSocial"
       >
-        Create new one here
+        Log in with social media
       </v-button>
-    </p>
-    <p v-else>
-      You alread have an account?
-      <v-button
-        :class="'button--link'"
-        @btn-event="login = !login"
-      >
-        Log in
-      </v-button>
-    </p>
-    <v-button
-      :class="'button--link'"
-      @btn-event="backToSocial"
-    >
-      Log in with social media
-    </v-button>
+    </template>
   </div>
 </template>
 <script>
 import { auth } from './../db'
 import { validationMixin } from 'vuelidate'
 import { required, email } from 'vuelidate/lib/validators'
+import { mapGetters } from 'vuex'
+import linkAccount from '@/mixins/linkAccount.js'
 import VButton from '@/components/Button.vue'
 
 export default {
   components: {
     VButton
   },
+  computed: {
+    ...mapGetters({
+      linkProvider: 'linkProvider',
+      linkCreds: 'linkCreds',
+      linkEmail: 'linkEmail'
+    }),
+    isLinkingProviderPassword () {
+      return this.linkProvider === 'password'
+    }
+  },
+  mixins: [validationMixin, linkAccount],
   data () {
     return {
       formData: {
@@ -154,9 +172,16 @@ export default {
       submitStatus: null
     }
   },
-  mixins: [validationMixin],
   validations () {
-    if (this.login) {
+    if (this.isLinkingProviderPassword) {
+      return {
+        formData: {
+          password: {
+            required
+          }
+        }
+      }
+    } else if (this.login && !this.isLinkingProviderPassword) {
       return {
         formData: {
           email: {
@@ -190,6 +215,10 @@ export default {
   },
   methods: {
     signIn () {
+      // if sing in is connected with linking account set email value
+      if (this.isLinkingProviderPassword) {
+        this.formData.email = this.linkEmail
+      }
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.submitStatus = 'ERROR'
@@ -198,12 +227,37 @@ export default {
         auth.signInWithEmailAndPassword(
           this.formData.email,
           this.formData.password
-        ).catch((err) => {
-          this.$store.commit('notification/push', {
-            message: err.message,
-            title: 'Error',
-            type: 'error'
-          }, { root: true })
+        ).then((result) => {
+          const user = result.user
+          if (this.isLinkingProviderPassword) {
+            this.linkAccountCreds(user, this.linkCreds)
+          }
+        }).catch((err) => {
+          if (err.code === 'auth/account-exists-with-different-credential') {
+            this.setLinkingAccountData(err)
+          } else if (err.code === 'auth/wrong-password') {
+            const creds = {
+              email: this.formData.email,
+              pass: this.formData.password
+            }
+            this.setLinkingAccountData(err, creds).then((result) => {
+              if (this.linkProvider && this.linkProvider !== 'password') {
+                this.$parent.emailPass = false
+              } else if (!result) {
+                this.$store.commit('notification/push', {
+                  message: err.message,
+                  title: 'Error',
+                  type: 'error'
+                }, { root: true })
+              }
+            })
+          } else {
+            this.$store.commit('notification/push', {
+              message: err.message,
+              title: 'Error',
+              type: 'error'
+            }, { root: true })
+          }
         })
       }
     },

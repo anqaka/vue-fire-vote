@@ -14,7 +14,10 @@ export default new Vuex.Store({
   state: {
     topics: [],
     user: null,
-    userVotes: []
+    userVotes: [],
+    topicsLoaded: 0,
+    admin: false,
+    linkAccount: null
   },
   mutations: mutations,
   actions,

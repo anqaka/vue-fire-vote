@@ -28,10 +28,11 @@
       </div>
       <div :class="['input', { 'input--error': $v.description.$error }]">
         <label for="description" class="form__label">
-          Topic description
+          Topic description (markdown syntax available, max. 700 characteres)
         </label>
         <textarea
           id="description"
+          @input="debounceInput"
           v-model="$v.description.$model"
           class="input__field input__field--textarea"
           type="text"
@@ -42,6 +43,12 @@
           class="error"
         >
           Field is required
+        </div>
+        <div
+          v-if="!$v.description.maxLength"
+          class="error"
+        >
+          Max length of text description - 700 characteres
         </div>
       </div>
       <div class="form-section__action">
@@ -54,8 +61,11 @@
     </form>
     <div v-if="submitStatus === 'OK'">
       <p>
-        Thanks for your submission!
+        Thanks for your submission! Your topic will be verified.
+        <br>
+        it will show on the list as soon as it is approved.
       </p>
+      <br>
       <v-button
         @btn-event="submitStatus = null"
       >
@@ -68,12 +78,21 @@
     >
       Please fill the form correctly.
     </p>
+    <div
+      v-if="description"
+      class="form-section__preview"
+    >
+      <h3>Your description preview:</h3>
+      <div v-html="compiledMarkdown(description)"></div>
+    </div>
   </section>
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { required } from 'vuelidate/lib/validators'
+import { required, maxLength } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
+import debounce from 'lodash.debounce'
+import markdown from '@/mixins/markdown.js'
 import Loader from '@/components/Loader.vue'
 import VButton from '@/components/Button.vue'
 
@@ -95,16 +114,25 @@ export default {
       submitStatus: null
     }
   },
-  mixins: [validationMixin],
+  mixins: [
+    validationMixin,
+    markdown
+  ],
   validations: {
     title: {
       required
     },
     description: {
-      required
+      required,
+      maxLength: maxLength(700)
     }
   },
   methods: {
+    debounceInput () {
+      debounce(function (e) {
+        this.input = e.target.value
+      }, 300)
+    },
     addTopic () {
       this.$v.$touch()
       if (this.$v.$invalid) {

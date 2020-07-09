@@ -1,29 +1,32 @@
 <template>
   <section>
     <h2>
-      List of proposed topics
+      {{ title }}
     </h2>
       <ul
         v-if="topics.length"
         class="topics-list"
       >
-        <topic-item
+        <li
           v-for="(item) in topics"
           :key="item['.key']"
-          :id="item['.key']"
-          :description="item.description"
-          :title="item.title"
-          :votes="item.votes"
-          :author="item.user"
-        />
+        >
+          <topic-item
+            :id="item['.key']"
+            :listItem="true"
+          />
+        </li>
       </ul>
       <transition name="fade">
-        <p v-if="!loading && topics.length === 0">
+        <p v-if="topicsLoaded === 1 && topics.length === 0">
           There is no topic proposition yes. Be the first one!
+        </p>
+        <p v-if="topicsLoaded === 2 && topics.length === 0">
+          En error occured. Refresh your page or try again later.
         </p>
       </transition>
       <transition name="fade">
-        <loader v-if="loading" />
+        <loader v-if="!topicsLoaded" />
       </transition>
   </section>
 </template>
@@ -32,24 +35,24 @@ import { mapState } from 'vuex'
 import Loader from '@/components/Loader.vue'
 
 export default {
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    topics: {
+      type: Array,
+      required: true
+    }
+  },
   components: {
     Loader,
     TopicItem: () => import('@/components/TopicItem.vue')
   },
-  mounted () {
-    this.$store.dispatch('bindTopics').then(() => {
-      this.loading = false
-    })
-  },
   computed: {
     ...mapState({
-      topics: state => state.topics
+      topicsLoaded: state => state.topicsLoaded
     })
-  },
-  data () {
-    return {
-      loading: true
-    }
   }
 }
 </script>

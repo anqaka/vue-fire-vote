@@ -6,11 +6,11 @@
           class="col-xs-12"
         >
           Hi
-          <span class="login-section__user">
+          <span class="bold">
             {{ user.displayName || user.email }}
           </span>!
           <br>
-          Now you can vote on proposed topic or add your own proposition.
+          You can vote on proposed topics or add your own proposition.
           <br>
           <v-button
             :class="'button--link'"
@@ -21,8 +21,40 @@
         </div>
       </transition>
       <transition name="fade">
+        <div
+          v-if="isEmailVerification"
+          class="col-xs-12"
+        >
+          <p>
+            Hi
+            <span class="bold">
+              {{ user.displayName || user.email }}
+            </span>!
+            <br>
+            Your email address is not verified.
+            <br>
+            You should receive an email verification request, check your email box.
+          </p>
+          <p>
+            If you didn't receive an email:
+            <v-button
+              :class="'button--link'"
+              @btn-event="resendEmailVerification"
+            >
+              Resend email verification request
+            </v-button>
+          </p>
+          <v-button
+            :class="'button--link'"
+            @btn-event="logout"
+          >
+            Logout
+          </v-button>
+        </div>
+      </transition>
+      <transition name="fade">
         <v-button
-          v-if="!isLoggedIn && !showLogin"
+          v-if="!user && !showLogin"
           @btn-event="showLogin = true"
         >
           Log in or create an account
@@ -30,45 +62,37 @@
       </transition>
       <transition name="fade">
         <auth-user
-          v-if="showLogin && !isLoggedIn"
+          v-if="!user && showLogin"
           @hide-auth="showLogin = false"
         />
       </transition>
-    <loader
-      v-if="loading"
-      class="loader--overlay"
-    />
   </section>
 </template>
 <script>
 import { auth } from './../db'
 import { mapGetters } from 'vuex'
+import { checkSocialLogin } from '../helpers'
 import VButton from '@/components/Button.vue'
-import Loader from '@/components/Loader.vue'
 import AuthUser from '@/components/AuthUser.vue'
 
 export default {
   components: {
     AuthUser,
-    Loader,
     VButton
   },
   computed: {
     ...mapGetters([
       'isLoggedIn',
       'user'
-    ])
+    ]),
+    isEmailVerification () {
+      return this.user && !this.user.emailVerified && !checkSocialLogin(this.user.provider)
+    }
   },
   data () {
     return {
-      loading: true,
       showLogin: false
     }
-  },
-  mounted () {
-    this.$store.dispatch('onAuthStateChanged').then(() => {
-      this.loading = false
-    })
   },
   methods: {
     logout () {
@@ -87,6 +111,9 @@ export default {
             type: 'error'
           }, { root: true })
         })
+    },
+    resendEmailVerification () {
+      this.$store.dispatch('sendEmailVerification')
     }
   }
 }
@@ -94,9 +121,5 @@ export default {
 <style lang="scss" scoped>
 .login-section {
   position: relative;
-
-  &__user {
-    font-weight: bold;
-  }
 }
 </style>

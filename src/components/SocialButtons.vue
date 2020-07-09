@@ -1,8 +1,9 @@
 <template>
   <div>
     <v-button
+      v-if="!linkProvider || linkProvider === 'facebook.com'"
       :class="fb.btnClass"
-      @btn-event="signInFb()"
+      @btn-event="singInWithProvider('facebook.com')"
     >
       <span class="button__icon">
         <FbIcon />
@@ -10,8 +11,9 @@
       {{ fb.label }}
     </v-button>
     <v-button
+    v-if="!linkProvider || linkProvider === 'google.com'"
       :class="google.btnClass"
-      @btn-event="signInGoogle()"
+      @btn-event="singInWithProvider('google.com')"
     >
       <span class="button__icon">
         <GoogleIcon />
@@ -19,8 +21,9 @@
       {{ google.label }}
     </v-button>
     <v-button
+      v-if="!linkProvider || linkProvider === 'github.com'"
       :class="github.btnClass"
-      @btn-event="signInGithub()"
+      @btn-event="singInWithProvider('github.com')"
     >
       <span class="button__icon">
         <GithubIcon />
@@ -28,8 +31,9 @@
       {{ github.label }}
     </v-button>
     <v-button
+      v-if="!linkProvider || linkProvider === 'twitter.com'"
       :class="twitter.btnClass"
-      @btn-event="signInTwitter()"
+      @btn-event="singInWithProvider('twitter.com')"
     >
       <span class="button__icon">
         <TwitterIcon />
@@ -39,18 +43,28 @@
   </div>
 </template>
 <script>
-import { auth, fbProvider, githubProvider, googleProvider, twitterProvider } from '../db'
+import linkAccount from '@/mixins/linkAccount.js'
+import { auth } from '@/db.js'
+import { mapGetters } from 'vuex'
+import { getProvider } from '@/helpers.js'
 import VButton from '@/components/Button.vue'
-import fb from '@/mixins/facebook.js'
 
 export default {
-  mixins: [fb],
   components: {
     VButton,
     FbIcon: () => import('@/assets/icons/fb-i.svg'),
     GithubIcon: () => import('@/assets/icons/github-i.svg'),
     GoogleIcon: () => import('@/assets/icons/google-i.svg'),
     TwitterIcon: () => import('@/assets/icons/twitter-i.svg')
+  },
+  mixins: [linkAccount],
+  computed: {
+    ...mapGetters({
+      user: 'user',
+      linkProvider: 'linkProvider',
+      linkCreds: 'linkCreds',
+      linkPass: 'linkPass'
+    })
   },
   data () {
     return {
@@ -69,60 +83,40 @@ export default {
       twitter: {
         btnClass: 'button--login button--twitter',
         label: 'Sign in with Twitter'
-      },
-      emailPass: false
+      }
     }
   },
   methods: {
-    signInFb () {
-      auth.signInWithPopup(fbProvider).then((result) => {
-        const token = result.credential.accessToken
-        const user = result.user
-        console.log('user', user, 'token', token)
-      }).catch((err) => {
-        this.$store.commit('notification/push', {
-          message: err.message,
-          title: 'Error',
-          type: 'error'
-        }, { root: true })
-      })
-    },
-    signInTwitter () {
-      auth.signInWithPopup(twitterProvider).then((result) => {
-        // const token = result.credential.accessToken
-        // const user = result.user
-      }).catch((err) => {
-        this.$store.commit('notification/push', {
-          message: err.message,
-          title: 'Error',
-          type: 'error'
-        }, { root: true })
-      })
-    },
-    signInGithub () {
-      auth.signInWithPopup(githubProvider).then((result) => {
-        // const token = result.credential.accessToken
-        // const user = result.user
-        // console.log('user', user, 'token', token)
-      }).catch((err) => {
-        this.$store.commit('notification/push', {
-          message: err.message,
-          title: 'Error',
-          type: 'error'
-        }, { root: true })
-      })
-    },
-    signInGoogle () {
-      auth.signInWithPopup(googleProvider).then((result) => {
-        // const token = result.credential.accessToken
-        // const user = result.user
-      }).catch((err) => {
-        this.$store.commit('notification/push', {
-          message: err.message,
-          title: 'Error',
-          type: 'error'
-        }, { root: true })
-      })
+    async singInWithProvider (provider) {
+      try {
+        await auth.signInWithPopup(getProvider(provider)).then((result) => {
+          const user = result.user
+          // if registered with another provider and stored creds
+          if (this.linkProvider && this.linkCreds) {
+            this.linkAccountCreds(user, this.linkCreds)
+          } else if (this.linkProvider && this.linkPass) {
+            this.createEmailPassWithCreds(user, this.linkPass)
+          }
+        })
+      } catch (err) {
+        if (err.code === 'auth/account-exists-with-different-credential') {
+          this.setLinkingAccountData(err).then((result) => {
+            if (!result) {
+              this.$store.commit('notification/push', {
+                message: err.message,
+                title: 'Error',
+                type: 'error'
+              }, { root: true })
+            }
+          })
+        } else {
+          this.$store.commit('notification/push', {
+            message: err.message,
+            title: 'Error',
+            type: 'error'
+          }, { root: true })
+        }
+      }
     }
   }
 }

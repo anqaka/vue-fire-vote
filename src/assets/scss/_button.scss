@@ -13,6 +13,7 @@
   font-weight: $font-weight-base;
   line-height: $line-height;
   color: $white;
+  text-decoration: none;
   cursor: pointer;
   transition: $transition-base;
 
@@ -33,6 +34,12 @@
     max-width: 320px;
     margin: 0 auto $spacer__s;
     padding: 0 $spacer--s 0 $spacer--m;
+  }
+
+  &--secondary {
+    background-color: $orange;
+    border-color: $orange;
+    color: $black;
   }
 
   &--link {

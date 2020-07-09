@@ -1,57 +1,59 @@
 <template>
-  <main id="app" class="container">
-    <div class="row center-xs">
-      <h1 class="col-xs-12">
-        Magento 2020 subjects voter
-      </h1>
-      <div class="col-xs-12">
-        <p>Some text that explain what is the page for</p>
-        <p>
-          This page allows as to collect topic that conference's participants are interested in. <br> It helps speakers to choose their subjects and us to choose those which fit your need.
-        </p>
-        <p v-if="!isLoggedIn">
-          You have to be logged in to vote for a topic or add your own proposition.
-        </p>
-      </div>
-      <user-state class="col-xs-12" />
-      <topic-list class="col-xs-12" />
-      <add-topic
-        v-if="isLoggedIn"
-        class="col-xs-12"
-      />
-    </div>
-  </main>
+  <div id="app">
+    <header class="row between-xs">
+      <nav
+        id="nav"
+        class="nav col-xs"
+      >
+        <router-link
+          to="/"
+          class="link"
+        >Home</router-link>
+        <router-link
+          v-if="isAdmin"
+          to="/admin-dashboard"
+          class="link"
+        >Admin Dashboard</router-link>
+      </nav>
+      <lang-switcher class="col-xs" />
+    </header>
+    <main class="container">
+      <router-view/>
+    </main>
+  </div>
 </template>
-
 <script>
 import { mapGetters } from 'vuex'
-import TopicList from '@/components/TopicList.vue'
-import UserState from '@/components/UserState.vue'
 import notification from '@/mixins/notification.js'
+import fb from '@/mixins/facebook.js'
+import LangSwitcher from '@/components/LangSwitcher.vue'
 
 export default {
-  name: 'App',
   components: {
-    AddTopic: () => import('@/components/AddTopic.vue'),
-    TopicList,
-    UserState
+    LangSwitcher
   },
-  mixins: [notification],
+  created () {
+    this.$store.dispatch('bindTopics')
+    this.$store.dispatch('onAuthStateChanged')
+  },
+  mixins: [notification, fb],
   computed: {
     ...mapGetters({
-      isLoggedIn: 'isLoggedIn'
+      isLoggedIn: 'isLoggedIn',
+      isAdmin: 'isAdmin'
     })
   }
 }
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.nav {
+  padding: $spacer--m;
+  text-align: left;
+
+  a {
+    padding: $spacer--xs 0;
+    margin: 0 $spacer--m;
+  }
 }
 </style>
