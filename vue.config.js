@@ -19,6 +19,12 @@ module.exports = {
       .end()
       .use('vue-svg-loader')
       .loader('vue-svg-loader')
+    config
+      .plugin('html')
+      .tap(args => {
+        args[0].title = 'Meet Magento Poland 2020 - topics poll'
+        return args
+      })
   },
   pluginOptions: {
     webpackBundleAnalyzer: {
