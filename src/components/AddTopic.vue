@@ -18,6 +18,7 @@
           class="input__field"
           type="text"
           placeholder="Topic title"
+          maxlength="150"
         >
         <div
           v-if="!$v.title.required"
@@ -37,7 +38,11 @@
           class="input__field input__field--textarea"
           type="text"
           placeholder="Topic description"
+          maxlength="700"
         />
+        <span>
+          {{ charactersLeft }}
+        </span>
         <div
           v-if="!$v.description.required"
           class="error"
@@ -89,7 +94,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { required, maxLength } from 'vuelidate/lib/validators'
+import { required } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 import debounce from 'lodash.debounce'
 import markdown from '@/mixins/markdown.js'
@@ -104,7 +109,13 @@ export default {
   computed: {
     ...mapGetters({
       isLoggedIn: 'isLoggedIn'
-    })
+    }),
+    charactersLeft () {
+      const char = this.description.length
+      const limit = 700
+
+      return `${(limit - char)} / ${limit} left`
+    }
   },
   data () {
     return {
@@ -123,8 +134,7 @@ export default {
       required
     },
     description: {
-      required,
-      maxLength: maxLength(700)
+      required
     }
   },
   methods: {
