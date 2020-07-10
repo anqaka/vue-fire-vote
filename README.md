@@ -1,14 +1,7 @@
-# vue-fire-vote
+# Topics voting app
 
-Web app to vote items
-
-## Basic features:
-Non logged user
-* see list of items
-Logged user
-* add item to list
-* vote item (upvote / downvote), unless he's its author
-* one item can be upvot only once
+Web app to add topics and vote for them. Build vith Vue.js (vue cli) + Firebase Database and Authentication.
+To fully use auth features add should be integrated additionally with Twitter, Facebook and Github
 
 ## Project setup
 ```

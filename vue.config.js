@@ -19,10 +19,11 @@ module.exports = {
       .end()
       .use('vue-svg-loader')
       .loader('vue-svg-loader')
+
     config
       .plugin('html')
       .tap(args => {
-        args[0].title = 'Meet Magento Poland 2020 - topics poll'
+        args[0].title = 'Topic voting app'
         return args
       })
   },
@@ -38,7 +39,7 @@ module.exports = {
     }
   },
   pwa: {
-    name: 'Vue fire vote',
+    name: 'Topic voting app',
     themeColor: '#fe5f15',
     msTileColor: '#FFFFFF',
     appleMobileWebAppCapable: 'yes',
