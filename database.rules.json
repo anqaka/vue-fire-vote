@@ -1,0 +1,26 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid",
+        "upvoted": {
+        	".indexOn": ["topic"]
+        }
+      }
+    },
+    "topics": {
+      ".read": true,
+    	".write": "auth.uid == auth.uid",
+      "title": {
+      	".validate": "newData.isString() && newData.val().length > 0"
+      },
+      "description": {
+        ".validate": "newData.isString() && newData.val().length > 0"
+      },
+      "user": {
+        ".validate": "newData.val() === auth.uid"
+      }
+    }
+  }
+}
