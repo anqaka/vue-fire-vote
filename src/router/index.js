@@ -9,27 +9,43 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      title: 'Meet Magento PL 2020 - topic poll',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'Interested topics for Meet Magento PL 2020, voting and call4papers'
+        },
+        {
+          property: 'og:description',
+          content: 'Interested topics for Meet Magento PL 2020, voting and call4papers'
+        }
+      ]
+    }
   },
   {
     path: '/topic/:id',
     name: 'topic',
     component: () => import(/* webpackChunkName: "topic" */ '../views/Topic.vue'),
-    props: true
+    props: true,
+    meta: {
+      title: 'Meet Magento PL 2020 - topic poll'
+    }
   },
   {
     path: '/admin-dashboard',
     name: 'Admin dasboard',
     component: () => import(/* webpackChunkName: "topic" */ '../views/AdminDashboard.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      title: 'Meet Magento PL 2020 - topic poll - dashboard'
     }
   }
 ]
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
   routes
 })
 
@@ -44,6 +60,13 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+})
+
+const DEFAULT_TITLE = 'Meet Magento PL 2020 - topic poll'
+router.afterEach((to, from) => {
+  Vue.nextTick(() => {
+    document.title = to.meta.title || DEFAULT_TITLE
+  })
 })
 
 export default router
