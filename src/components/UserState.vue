@@ -16,7 +16,7 @@
             :class="'button--link'"
             @btn-event="logout"
           >
-            Logout
+            {{ $t('login.logout') }}
           </v-button>
         </div>
       </transition>
@@ -48,7 +48,7 @@
             :class="'button--link'"
             @btn-event="logout"
           >
-            Logout
+            {{ $t('login.logout') }}
           </v-button>
         </div>
       </transition>
@@ -57,7 +57,7 @@
           v-if="!user && !showLogin"
           @btn-event="showLogin = true"
         >
-          Log in or create an account
+          {{ $t('login.login-create-button') }}
         </v-button>
       </transition>
       <transition name="fade">
